@@ -1,18 +1,16 @@
-# 希沃视频展台软件 - 专业教学展示工具
-
-![软件截图](screenshot.png)
+# 汐沃视频展台软件 - 专业教学展示工具
 
 ## 简介
 
-希沃视频展台软件是一款专为教育场景设计的专业展示工具，提供高清摄像头捕捉、实时批注、梯形校正等强大功能。通过直观的界面和丰富的工具，教师可以轻松展示教材、实验过程和艺术作品，并进行实时标注讲解。
+汐沃视频展台是一款专为教育场景设计的专业展示工具，提供高清摄像头捕捉、实时批注、梯形校正等强大功能。通过直观的界面和丰富的工具，教师可以轻松展示教材、实验过程和艺术作品，并进行实时标注讲解。
 
-[![下载按钮](download-button.png)](https://example.com/download/latest)
+[![下载](download-button.png)](https://github.com/wwcrdrvf6u/sw_easicamera/releases/)
 
 ## 主要功能
 
 ### 🎥 高清视频捕捉
 - 自动检测并连接多个摄像头
-- 支持多种分辨率（最高1080P）
+- 支持多种分辨率（最高4K）
 - 摄像头参数自动优化
 
 ### ✏️ 实时批注工具
@@ -46,38 +44,18 @@
 | 操作系统 | 最低要求 | 推荐配置 |
 |----------|----------|----------|
 | **Windows** | Windows 7, 1GB RAM | Windows 10+, 4GB RAM |
-| **macOS** | macOS 10.13, 2GB RAM | macOS 12+, 8GB RAM |
-| **Linux** | Ubuntu 18.04, 1GB RAM | Ubuntu 22.04, 4GB RAM |
+# | **macOS** | macOS 10.13, 2GB RAM | macOS 12+, 8GB RAM |  暂定
+# | **Linux** | Ubuntu 18.04, 1GB RAM | Ubuntu 22.04, 4GB RAM |  暂定
 
 ## 下载安装
 
 ### Windows 安装
-1. 下载安装程序：[easicamera_windows_v1.0.exe](https://example.com/download/easicamera_windows_v1.0.exe)
+1. 下载安装程序：[easicamera](https://github.com/wwcrdrvf6u/sw_easicamera/releases/)
 2. 运行安装向导
 3. 按照提示完成安装
 4. 启动软件，自动检测摄像头
 
-### macOS 安装
-```bash
-# 通过Homebrew安装
-brew tap easicamera/tap
-brew install easicamera
 
-# 或者直接下载DMG安装包
-[下载macOS版](https://example.com/download/easicamera_macos_v1.0.dmg)
-```
-
-### Linux 安装
-```bash
-# Ubuntu/Debian
-sudo apt install python3 python3-pip python3-opencv
-pip3 install PySide2 numpy
-wget https://example.com/download/easicamera.py
-python3 easicamera.py
-
-# Arch Linux
-yay -S easicamera
-```
 
 ## 使用指南
 
@@ -112,23 +90,19 @@ yay -S easicamera
 - 添加梯形校正功能
 - 实现照片库管理
 
-### v1.1.0 (计划中)
-- 添加形状识别工具（圆形、矩形、箭头）
-- 增加文字批注功能
-- 支持视频录制
-- 添加云存储集成
+### v1.2.0 
+优化橡皮擦功能
 
 ## 技术支持
 
 遇到问题或有建议？请通过以下方式联系我们：
 
-- **邮箱支持**: support@easicamera.com
-- **社区论坛**: [forum.easicamera.com](https://forum.easicamera.com)
-- **GitHub仓库**: [github.com/easicamera](https://github.com/easicamera)
+- **邮箱支持**: xxxxxx0706202207@163.com
+- **GitHub仓库**: [github.com/easicamera](https://github.com/wwcrdrvf6u/sw_easicamera)
 
 ## 开源许可
 
-希沃视频展台软件基于 **MIT 许可证** 开源发布。欢迎开发者参与贡献！
+希沃视频展台软件基于 **GPL-3.0 许可证** 开源发布。欢迎开发者参与贡献！
 
 ```text
 MIT License
@@ -137,9 +111,3 @@ Copyright (c) 2023 EasiCamera Team
 
 Permission is hereby granted...（完整许可证内容见项目仓库）
 ```
-
----
-
-**立即下载体验**：[Windows版](https://example.com/download/windows) | [macOS版](https://example.com/download/macos) | [Linux版](https://example.com/download/linux)
-
-[![软件演示视频](video-thumbnail.jpg)](https://example.com/demo-video)
