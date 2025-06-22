@@ -1,26 +1,145 @@
-# 神仙村
+# 希沃视频展台软件 - 专业教学展示工具
 
-在遥远的东方，有一个名叫**神仙村**的地方。这里是人间难得的桃源，远离喧嚣与纷争，令人向往。
+![软件截图](screenshot.png)
 
-## 村子的一切
+## 简介
 
-- **自然环境**  
-  神仙村四面环山，青翠欲滴，溪水潺潺。村中花香鸟语，四季如春，宛如人间仙境。
+希沃视频展台软件是一款专为教育场景设计的专业展示工具，提供高清摄像头捕捉、实时批注、梯形校正等强大功能。通过直观的界面和丰富的工具，教师可以轻松展示教材、实验过程和艺术作品，并进行实时标注讲解。
 
-- **村民生活**  
-  村民们过着简单而幸福的生活。他们勤劳耕作，过着自给自足的生活。每当丰收季节，大家会聚在一起庆祝，分享喜悦。
+[![下载按钮](download-button.png)](https://example.com/download/latest)
 
-- **神秘传说**  
-  传说在村子的中心，有一口古井。喝了井水的人，会拥有幸运与健康。每年，村民们都会在这里举行祭祀仪式，祈求村庄的平安与繁荣。
+## 主要功能
 
-## 文化活动
+### 🎥 高清视频捕捉
+- 自动检测并连接多个摄像头
+- 支持多种分辨率（最高1080P）
+- 摄像头参数自动优化
 
-- **传统节日**  
-  村里每年都会举办**花灯节**，村民们会亲手制作五彩斑斓的花灯，载着他们的愿望，放入溪水中，寓意捎去美好的期盼。
+### ✏️ 实时批注工具
+- 可自定义颜色和粗细的画笔
+- 橡皮擦功能
+- 手势识别（手掌自动切换橡皮擦）
+- 批注撤回与清除
 
-- **手工艺**  
-  村民们擅长各种手工艺，如竹编、陶艺。他们的作品既实用又富有艺术感，吸引了许多游客前来购买。
+### ⚙️ 高级图像处理
+- **梯形校正**：解决拍摄角度问题
+- **画面调节**：
+  - 亮度/对比度调整
+  - 图像旋转（0°/90°/180°/270°）
+  - 水平镜像翻转
+- 透视变换校正
 
-## 结语
+### 🖼️ 照片管理
+- 一键拍照捕获
+- 照片库管理
+- 批注保存功能
+- 历史记录查看
 
-神仙村是一个充满宁静和美好的地方，只有在这里，才能感受到人间至纯的生活和最朴实的幸福。
+### 👆 触控优化
+- 单指批注
+- 双指缩放/平移
+- 手掌检测自动切换橡皮擦
+- 全屏触控支持
+
+## 系统要求
+
+| 操作系统 | 最低要求 | 推荐配置 |
+|----------|----------|----------|
+| **Windows** | Windows 7, 1GB RAM | Windows 10+, 4GB RAM |
+| **macOS** | macOS 10.13, 2GB RAM | macOS 12+, 8GB RAM |
+| **Linux** | Ubuntu 18.04, 1GB RAM | Ubuntu 22.04, 4GB RAM |
+
+## 下载安装
+
+### Windows 安装
+1. 下载安装程序：[easicamera_windows_v1.0.exe](https://example.com/download/easicamera_windows_v1.0.exe)
+2. 运行安装向导
+3. 按照提示完成安装
+4. 启动软件，自动检测摄像头
+
+### macOS 安装
+```bash
+# 通过Homebrew安装
+brew tap easicamera/tap
+brew install easicamera
+
+# 或者直接下载DMG安装包
+[下载macOS版](https://example.com/download/easicamera_macos_v1.0.dmg)
+```
+
+### Linux 安装
+```bash
+# Ubuntu/Debian
+sudo apt install python3 python3-pip python3-opencv
+pip3 install PySide2 numpy
+wget https://example.com/download/easicamera.py
+python3 easicamera.py
+
+# Arch Linux
+yay -S easicamera
+```
+
+## 使用指南
+
+### 基础操作
+1. **启动软件**：自动显示启动画面并连接摄像头
+2. **工具栏**：使用底部工具栏切换不同功能
+3. **拍照**：点击相机图标或按空格键捕获当前画面
+4. **保存**：Ctrl+S保存当前图像（带批注）
+
+### 快捷键
+| 快捷键 | 功能 |
+|--------|------|
+| `Space` | 拍照 |
+| `P` | 画笔工具 |
+| `E` | 橡皮擦工具 |
+| `M` | 移动/缩放模式 |
+| `Ctrl+Z` | 撤回操作 |
+| `Ctrl+S` | 保存图像 |
+| `Esc` | 退出程序 |
+
+### 高级功能
+- **梯形校正**：通过四点调整解决拍摄角度问题
+- **画面调节**：调整亮度、对比度和方向
+- **批注管理**：在照片库中查看和管理所有批注图像
+
+## 更新日志
+
+### v1.0.0 (2023-10-25)
+- 首次正式发布
+- 实现摄像头自动检测与连接
+- 完成基础批注工具套件
+- 添加梯形校正功能
+- 实现照片库管理
+
+### v1.1.0 (计划中)
+- 添加形状识别工具（圆形、矩形、箭头）
+- 增加文字批注功能
+- 支持视频录制
+- 添加云存储集成
+
+## 技术支持
+
+遇到问题或有建议？请通过以下方式联系我们：
+
+- **邮箱支持**: support@easicamera.com
+- **社区论坛**: [forum.easicamera.com](https://forum.easicamera.com)
+- **GitHub仓库**: [github.com/easicamera](https://github.com/easicamera)
+
+## 开源许可
+
+希沃视频展台软件基于 **MIT 许可证** 开源发布。欢迎开发者参与贡献！
+
+```text
+MIT License
+
+Copyright (c) 2023 EasiCamera Team
+
+Permission is hereby granted...（完整许可证内容见项目仓库）
+```
+
+---
+
+**立即下载体验**：[Windows版](https://example.com/download/windows) | [macOS版](https://example.com/download/macos) | [Linux版](https://example.com/download/linux)
+
+[![软件演示视频](video-thumbnail.jpg)](https://example.com/demo-video)
