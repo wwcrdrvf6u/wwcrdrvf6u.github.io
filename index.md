@@ -4,7 +4,7 @@
 
 汐沃视频展台是一款专为教育场景设计的专业展示工具，提供高清摄像头捕捉、实时批注、梯形校正等强大功能。通过直观的界面和丰富的工具，教师可以轻松展示教材、实验过程和艺术作品，并进行实时标注讲解。
 
-[![下载](download-button.png)](https://github.com/wwcrdrvf6u/sw_easicamera/releases/)
+[![下载](download-button.png)](https://github.com/wwcrdrvf6u/ShowWrite/releases/)
 
 ## 主要功能
 
@@ -50,7 +50,7 @@
 ## 下载安装
 
 ### Windows 安装
-1. 下载安装程序：[easicamera](https://github.com/wwcrdrvf6u/sw_easicamera/releases/)
+1. 下载安装程序：[easicamera](https://github.com/wwcrdrvf6u/ShowWrite/releases/)
 2. 运行安装向导
 3. 按照提示完成安装
 4. 启动软件，自动检测摄像头
@@ -98,7 +98,7 @@
 遇到问题或有建议？请通过以下方式联系我们：
 
 - **邮箱支持**: xxxxxx0706202207@163.com
-- **GitHub仓库**: [github.com/easicamera](https://github.com/wwcrdrvf6u/sw_easicamera)
+- **GitHub仓库**: [github.com/easicamera](https://github.com/wwcrdrvf6u/ShowWrite)
 
 ## 开源许可
 
