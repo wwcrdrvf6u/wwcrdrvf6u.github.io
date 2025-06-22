@@ -44,8 +44,8 @@
 | 操作系统 | 最低要求 | 推荐配置 |
 |----------|----------|----------|
 | **Windows** | Windows 7, 1GB RAM | Windows 10+, 4GB RAM |
-# | **macOS** | macOS 10.13, 2GB RAM | macOS 12+, 8GB RAM |  暂定
-# | **Linux** | Ubuntu 18.04, 1GB RAM | Ubuntu 22.04, 4GB RAM |  暂定
+#| **macOS** | macOS 10.13, 2GB RAM | macOS 12+, 8GB RAM |  暂定
+#| **Linux** | Ubuntu 18.04, 1GB RAM | Ubuntu 22.04, 4GB RAM |  暂定
 
 ## 下载安装
 
