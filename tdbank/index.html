@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天地银行 - 阴阳两界金融服务</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        .gold-gradient {
+            background: linear-gradient(90deg, #FFD700, #FFEC8B, #FFD700);
+            background-size: 200% 100%;
+            animation: shine 3s linear infinite;
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        .bank-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .bank-card:hover {
+            transform: rotateY(15deg) rotateX(5deg);
+            box-shadow: 0 20px 30px rgba(255, 215, 0, 0.4);
+        }
+        .yin-yang {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #000 50%, #fff 50%);
+        }
+        .yin-yang::before, .yin-yang::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+        .yin-yang::before {
+            width: 50px;
+            height: 50px;
+            background: #000;
+            border: 15px solid #fff;
+            top: 0;
+            left: 25px;
+        }
+        .yin-yang::after {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border: 15px solid #000;
+            bottom: 0;
+            left: 25px;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ghost {
+            position: relative;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50% 50% 0 0;
+            animation: ghostFloat 4s ease-in-out infinite;
+        }
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 30px 0 0 #000;
+        }
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 50% 50%;
+            background: rgba(255, 255, 255, 0.8);
+            top: 80px;
+            left: 10px;
+        }
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 整合样式 */
+        .login-box {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #d4af37;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 220px;
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .login-tit {
+            background: #d4af37;
+            color: #000;
+            padding: 10px;
+            font-weight: bold;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .login-close {
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .login-list ul {
+            list-style: none;
+        }
+        .login-list ul li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+        }
+        .login-list ul li:last-child {
+            border-bottom: none;
+        }
+        .login-list ul li a {
+            color: #e0d0a0;
+            text-decoration: none;
+            display: block;
+            padding-left: 25px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .login-list ul li a:before {
+            content: "»";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+        .login-list ul li a:hover {
+            color: #d4af37;
+            padding-left: 30px;
+        }
+        
+        .news-section {
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid #d4af37;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .news-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .news-lists {
+            color: #e0d0a0;
+            padding: 12px 0;
+            border-bottom: 1px dashed #444;
+        }
+        .news-lists a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+        .news-lists a:hover {
+            color: #ffec8b;
+            padding-left: 5px;
+        }
+        .btn-more {
+            color: #d4af37;
+            text-decoration: none;
+            float: right;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn-more:hover {
+            color: #ffec8b;
+        }
+        
+        .services-section {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #d4af37;
+            padding: 30px 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .services-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .service-item {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .service-icon {
+            font-size: 40px;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+        .service-name {
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .service-desc {
+            color: #e0d0a0;
+            font-size: 14px;
+        }
+        
+        .feature-box {
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .login-box {
+                top: 80px;
+                right: 10px;
+                width: 180px;
+            }
+            .news-section, .services-section {
+                margin: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- Floating Ghosts Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ghost absolute top-1/4 left-1/6 opacity-30" style="animation-delay: 0.5s;"></div>
+        <div class="ghost absolute top-1/3 right-1/5 opacity-20" style="animation-delay: 1s;"></div>
+        <div class="ghost absolute bottom-1/4 left-1/4 opacity-25" style="animation-delay: 1.5s;"></div>
+        <div class="ghost absolute bottom-1/3 right-1/6 opacity-15" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- 登录框 -->
+    <div class="login-box">
+        <div class="login-tit">
+            天地银行服务通道
+            <span class="login-close">✕</span>
+        </div>
+        <div class="login-list">
+            <ul>
+                <li><a href="./personal-login.html" title="个人客户登录">个人客户登录</a></li>
+                <li><a href="./family-login.html" title="家族账户登录">家族账户登录</a></li>
+                <li><a href="./underworld-login.html" title="地府机构登录">地府机构登录</a></li>
+                <li><a href="./afterlife-service.html" title="往生者服务">往生者服务</a></li>
+                <li><a href="./currency-exchange.html" title="冥币兑换">冥币兑换</a></li>
+                <li><a href="./yin-yang-transfer.html" title="阴阳转账">阴阳转账</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="gold-gradient py-6 shadow-lg relative z-10">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="yin-yang mr-4"></div>
+                <h1 class="text-3xl md:text-4xl font-bold text-black">
+                    天地银行 <span class="text-sm block md:inline">阴阳两界金融服务</span>
+                </h1>
+            </div>
+            <nav class="flex space-x-1 md:space-x-4">
+                <a href="#services" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">服务项目</a>
+                <a href="#about" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">关于我们</a>
+                <a href="#contact" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-20 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-60 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 fade-in">
+                    <h2 class="text-4xl md:text-6xl font-bold mb-6 text-yellow-300">
+                        连接阴阳两界的<span class="block">金融桥梁</span>
+                    </h2>
+                    <p class="text-xl mb-8 text-gray-300">
+                        自唐朝以来，我们为阴阳两界提供最可靠的金融服务。无论是现世的财富管理，还是冥界的资产传承，天地银行都能为您妥善处理。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="./open-account.html" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 shadow-lg">
+                            开设账户
+                        </a>
+                        <a href="./about.html" class="bg-transparent border-2 border-yellow-500 hover:bg-yellow-500 hover:bg-opacity-20 text-yellow-500 font-bold py-3 px-6 rounded-lg transition transform hover:scale-105">
+                            了解更多
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center float-animation">
+                    <div class="bank-card bg-gradient-to-br from-yellow-600 to-yellow-800 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+                        <div class="flex justify-between items-center mb-8">
+                            <div class="text-2xl font-bold text-black">天地银行</div>
+                            <div class="text-black text-sm">VIP 至尊客户</div>
+                        </div>
+                        <div class="mb-8">
+                            <div class="text-black text-lg mb-2">账户号码</div>
+                            <div class="text-2xl font-mono tracking-widest text-black">8888 8888 8888 8888</div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="text-black text-sm mb-1">有效期</div>
+                                <div class="text-black font-bold">∞ / ∞</div>
+                            </div>
+                            <div class="text-3xl font-bold italic text-black">阴阳通</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 新闻公告区域 -->
+    <div class="news-section">
+        <div class="news-title">
+            <span>天地银行公告</span>
+            <a href="./news.html" class="btn-more">更多>></a>
+        </div>
+        <div class="notice">
+            <ul>
+                <li class="news-lists">
+                    <a href="./news-detail.html?id=1">【重要通知】中元节冥币兑换特别通道已开启</a>
+                </li>
+                <li class="news-lists">
+                    <a href="./news-detail.html?id=2">天地银行新版"亿万元"冥币正式发行</a>
+                </li>
+                <li class="news-lists">
+                    <a href="./news-detail.html?id=3">地府信贷推出"往生无忧"还款计划</a>
+                </li>
+                <li class="news-lists">
+                    <a href="./news-detail.html?id=4">清明节期间阴阳转账手续费全免</a>
+                </li>
+                <li class="news-lists">
+                    <a href="./news-detail.html?id=5">天地银行荣获"冥界最佳金融机构"称号</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部服务模块 -->
+    <div class="services-section">
+        <div class="services-title">快捷服务通道</div>
+        <div class="service-grid">
+            <a href="./announcements.html" class="service-item">
+                <div class="service-icon">📜</div>
+                <div class="service-name">冥府公告</div>
+                <div class="service-desc">最新阴间金融政策</div>
+            </a>
+            <a href="./branches.html" class="service-item">
+                <div class="service-icon">🏦</div>
+                <div class="service-name">天地网点</div>
+                <div class="service-desc">阴阳两界分支机构</div>
+            </a>
+            <a href="./exchange-rates.html" class="service-item">
+                <div class="service-icon">📊</div>
+                <div class="service-name">冥币汇率</div>
+                <div class="service-desc">实时阴阳兑换率</div>
+            </a>
+            <a href="./fees.html" class="service-item">
+                <div class="service-icon">📝</div>
+                <div class="service-name">资费标准</div>
+                <div class="service-desc">天地银行服务费用</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-800 relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">我们的服务</h2>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto mb-4"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    天地银行提供跨越阴阳两界的全方位金融服务，满足您在不同维度的财务需求
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Service 1 -->
+                <a href="./yin-yang-transfer.html" class="feature-box bg-gray-900 p-8 rounded-xl hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-300">
+                    <div class="text-yellow-500 text-4xl mb-6">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">阴阳转账</h3>
+                    <p class="text-gray-400">
+                        轻松实现现世与冥界之间的资金转移，让您的财富在阴阳两界自由流通。
+                    </p>
+                </a>
+                
+                <!-- Service 2 -->
+                <a href="./underworld-savings.html" class="feature-box bg-gray-900 p-8 rounded-xl hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-300">
+                    <div class="text-yellow-500 text-4xl mb-6">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">冥界储蓄</h3>
+                    <p class="text-gray-400">
+                        专为冥界设计的储蓄方案，利率远高于人间银行，让您的冥币保值增值。
+                    </p>
+                </a>
+                
+                <!-- Service 3 -->
+                <a href="./ancestor-loan.html" class="feature-box bg-gray-900 p-8 rounded-xl hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-300">
+                    <div class="text-yellow-500 text-4xl mb-6">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">祖先贷款</h3>
+                    <p class="text-gray-400">
+                        向您已故的祖先申请贷款，以他们在冥界的资产作为担保，解决现世资金需求。
+                    </p>
+                </a>
+                
+                <!-- Service 4 -->
+                <a href="./yin-yang-insurance.html" class="feature-box bg-gray-900 p-8 rounded-xl hover:shadow-lg hover:shadow-yellow-500/20 transition-all duration-300">
+                    <div class="text-yellow-500 text-4xl mb-6">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">阴阳保险</h3>
+                    <p class="text-gray-400">
+                        全面保障您在阴阳两界的资产安全，包括鬼怪损害、阴气侵蚀等特殊风险。
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-900 to-black opacity-30 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <img src="https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=2070&auto=format&fit=crop" alt="天地银行历史" class="rounded-xl shadow-2xl w-full transform transition hover:scale-105 duration-500">
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">千年传承 值得信赖</h2>
+                    <p class="text-lg mb-6 text-gray-300">
+                        天地银行创立于唐朝贞观年间，由地藏王菩萨亲自授权设立，是阴阳两界历史最悠久、规模最大的金融机构。我们拥有独特的阴阳通道技术，确保您的资金安全无虞。
+                    </p>
+                    <div class="mb-8">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-black"></i>
+                            </div>
+                            <p class="text-lg">超过1300年的金融服务经验</p>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-black"></i>
+                            </div>
+                            <p class="text-lg">服务超过10亿阴阳客户</p>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-yellow-500 rounded-full w-8 h-8 flex items-center justify-center mr-4">
+                                <i class="fas fa-check text-black"></i>
+                            </div>
+                            <p class="text-lg">获得天庭AAA级信用评级</p>
+                        </div>
+                    </div>
+                    <a href="./history.html" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 shadow-lg inline-block">
+                        了解我们的历史
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">客户见证</h2>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto mb-4"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    听听我们的阴阳两界客户怎么说
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-900 p-8 rounded-xl relative">
+                    <div class="absolute -top-4 -left-4 bg-yellow-500 text-black w-12 h-12 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fas fa-ghost"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "作为一位唐朝的鬼魂，天地银行帮我妥善保管了1300多年的财富，还让我能在现代投资房地产，服务真的没话说！"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?q=80&w=1934&auto=format&fit=crop" alt="李老先生" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">李老先生</h4>
+                            <p class="text-sm text-yellow-500">唐朝客户</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-900 p-8 rounded-xl relative">
+                    <div class="absolute -top-4 -left-4 bg-yellow-500 text-black w-12 h-12 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "我通过天地银行向已故的祖父借了一笔启动资金，现在公司上市了，正准备通过天地银行还债，流程非常方便！"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="王先生" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">王先生</h4>
+                            <p class="text-sm text-yellow-500">现代企业家</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-900 p-8 rounded-xl relative">
+                    <div class="absolute -top-4 -left-4 bg-yellow-500 text-black w-12 h-12 rounded-full flex items-center justify-center text-2xl">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <p class="text-gray-300 mb-6 italic">
+                        "作为地府公务员，天地银行的阴阳转账服务大大简化了我的工作流程，再也不用背着大袋冥币到处跑了！"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop" alt="黑无常" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold">黑无常</h4>
+                            <p class="text-sm text-yellow-500">地府公务员</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-yellow-900 to-black opacity-20 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-yellow-400">联系我们</h2>
+                <div class="w-24 h-1 bg-yellow-500 mx-auto mb-4"></div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    无论您身处阳间还是阴间，我们都能为您提供帮助
+                </p>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <h3 class="text-2xl font-bold mb-6 text-yellow-300">阴阳两界分行</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Branch 1 -->
+                        <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg">
+                            <div class="text-yellow-500 text-2xl mb-4">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h4 class="font-bold mb-2">阳间总行</h4>
+                            <p class="text-gray-400 mb-2">
+                                <i class="fas fa-map-marker-alt mr-2 text-yellow-500"></i> 中国丰都县阴阳路88号
+                            </p>
+                            <p class="text-gray-400 mb-2">
+                                <i class="fas fa-phone mr-2 text-yellow-500"></i> +86 888 8888 8888
+                            </p>
+                            <p class="text-gray-400">
+                                <i class="fas fa-envelope mr-2 text-yellow-500"></i> yang@tiandibank.com
+                            </p>
+                        </div>
+                        
+                        <!-- Branch 2 -->
+                        <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg">
+                            <div class="text-yellow-500 text-2xl mb-4">
+                                <i class="fas fa-ghost"></i>
+                            </div>
+                            <h4 class="font-bold mb-2">阴间总行</h4>
+                            <p class="text-gray-400 mb-2">
+                                <i class="fas fa-map-marker-alt mr-2 text-yellow-500"></i> 地府酆都城金融街666号
+                            </p>
+                            <p class="text-gray-400 mb-2">
+                                <i class="fas fa-phone mr-2 text-yellow-500"></i> 冥界热线：666-666-6666
+                            </p>
+                            <p class="text-gray-400">
+                                <i class="fas fa-envelope mr-2 text-yellow-500"></i> yin@tiandibank.com
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-bold mb-4 text-yellow-300">特殊联系方式</h4>
+                        <div class="bg-gray-900 bg-opacity-70 p-6 rounded-lg">
+                            <p class="text-gray-400 mb-4">
+                                对于无法使用常规通讯方式的客户，我们提供以下特殊联系方式：
+                            </p>
+                            <ul class="space-y-2">
+                                <li class="flex items-center">
+                                    <i class="fas fa-fire mr-2 text-yellow-500"></i>
+                                    <span>焚香祷告：点燃三炷香，默念"天地银行"三遍</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-moon mr-2 text-yellow-500"></i>
+                                    <span>托梦服务：睡前将存折放在枕头下</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-paper-plane mr-2 text-yellow-500"></i>
+                                    <span>烧纸传信：将需求写在黄纸上焚烧</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-gray-900 bg-opacity-70 p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-6 text-yellow-300">发送信息</h3>
+                        <form action="./contact-submit.html" method="POST">
+                            <div class="mb-6">
+                                <label for="name" class="block text-gray-300 mb-2">您的姓名</label>
+                                <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="dimension" class="block text-gray-300 mb-2">您所在的维度</label>
+                                <select id="dimension" name="dimension" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                    <option value="yang">阳间</option>
+                                    <option value="yin">阴间</option>
+                                    <option value="other">其他维度</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label for="contact" class="block text-gray-300 mb-2">联系方式</label>
+                                <input type="text" id="contact" name="contact" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="电话/邮箱/灵魂频率" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-300 mb-2">您的信息</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 shadow-lg">
+                                发送信息
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="yin-yang mr-4"></div>
+                        <h2 class="text-2xl font-bold text-yellow-500">天地银行</h2>
+                    </div>
+                    <p class="text-gray-500 mt-2">© 618-2023 天地银行 版权所有</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="./wechat.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="./weibo.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="./qq.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="./ghost-contact.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fas fa-ghost"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500">
+                <p>重要提示：天地银行受天庭金融管理局和地府财政司共同监管，存款安全有保障。</p>
+                <p class="mt-2">冥币与人民币兑换汇率每日浮动，请以当日阎王殿公告为准。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <a href="./online-service.html" class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+            <i class="fas fa-ghost text-2xl"></i>
+        </a>
+    </div>
+
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(el => {
+                el.style.opacity = 0;
+                observer.observe(el);
+            });
+            
+            // Card tilt effect
+            const cards = document.querySelectorAll('.bank-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                });
+            });
+            
+            // Floating button animation
+            const fab = document.querySelector('.fixed a');
+            setInterval(() => {
+                fab.classList.toggle('transform');
+                fab.classList.toggle('translate-y-2');
+            }, 3000);
+            
+            // Login close button
+            const closeBtn = document.querySelector('.login-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.login-box').style.display = 'none';
+                });
+            }
+            
+            // News auto scroll
+            const newsList = document.querySelector('.notice ul');
+            if (newsList) {
+                setInterval(function() {
+                    const firstItem = newsList.firstElementChild;
+                    if (firstItem) {
+                        newsList.appendChild(firstItem.cloneNode(true));
+                        firstItem.remove();
+                    }
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
