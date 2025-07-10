@@ -100,14 +100,5 @@
 - **邮箱支持**: xxxxxx0706202207@163.com
 - **GitHub仓库**: [github.com/easicamera](https://github.com/wwcrdrvf6u/ShowWrite)
 
-## 开源许可
-
-希沃视频展台软件基于 **GPL-3.0 许可证** 开源发布。欢迎开发者参与贡献！
-
-```text
-MIT License
-
-Copyright (c) 2023 EasiCamera Team
-
-Permission is hereby granted...（完整许可证内容见项目仓库）
-```
+## 天地银行
+[天地银行](https://wwcrdvf6u.github.io/tdbank/)
