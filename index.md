@@ -101,4 +101,4 @@
 - **GitHub仓库**: [github.com/easicamera](https://github.com/wwcrdrvf6u/ShowWrite)
 
 ## 天地银行
-[天地银行](https://wwcrdvf6u.github.io/tdbank/)
+[天地银行](https://wwcrdrvf6u.github.io/tdbank/)
