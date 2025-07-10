@@ -47,22 +47,29 @@
             overflow-y: auto;
         }
         .sidebar .nav-link {
-            color: #e0d0a0 !important;
-            transition: all 0.3s;
-            padding: 12px 15px;
-            border-bottom: 1px solid #333;
             position: relative;
-            padding-left: 25px;
+            display: block;
+            color: #e0d0a0 !important;
+            padding-left: 30px;
+            border-bottom: 1px solid #333;
+            transition: color 0.3s, background-color 0.3s;
         }
-        .sidebar .nav-link:before {
+        .sidebar .nav-link::before {
             content: "»";
             position: absolute;
             left: 10px;
             color: #d4af37;
+            transition: transform 0.3s ease, color 0.3s ease;
         }
+
+        .sidebar .nav-link:hover::before {
+         transform: translateX(5px);
+            color: #ffd700;
+        }
+
         .sidebar .nav-link:hover {
             color: #d4af37 !important;
-            padding-left: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
         }
         .sidebar h4 {
             color: #d4af37;
@@ -104,10 +111,10 @@
             font-weight: bold;
             transition: all 0.3s;
         }
-        .btn-primary:hover {
+        .btn-primary:hover {    
             background-color: #b8951d;
             border-color: #9e7e16;
-            transform: scale(1.05);
+            /*transform: scale(1.05);* /*有问题*/
         }
         .form-control {
             background: rgba(30, 30, 30, 0.8);
@@ -295,7 +302,7 @@
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('currencyExchange')" data-key="currencyExchange"><i class="fas fa-money-bill-wave me-2"></i> 货币兑换</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('offerBuddha')" data-key="offerBuddha"><i class="fas fa-hands-praying me-2"></i> 供佛</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('contacts')" data-key="contacts"><i class="fas fa-address-book me-2"></i> 通讯录</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" onclick="showChatModal()" data-key="treasuryLink"><i class="fas fa-landmark me-2"></i> 直连督财府</a></li>
+
                 </ul>
             </div>
 
@@ -490,7 +497,7 @@
                             <label for="contactAccount" class="form-label" data-key="account">账号</label>
                             <input type="text" class="form-control" id="contactAccount" placeholder="账号" required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" data-key="addContact">添加联系人</button>
+                        <button  class="btn btn-primary w-100" data-key="addContact">添加联系人</button>
                     </form>
                 </div>
             </div>
@@ -534,34 +541,6 @@
     <a href="./online-service.html" class="quick-btn">
         <i class="fas fa-ghost text-2xl"></i>
     </a>
-
-    <!-- 督财府对话模态框 -->
-    <div class="col-md-9 content modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-gray-900 border border-yellow-700">
-                <div class="modal-header bg-yellow-800 text-black">
-                    <h5 class="modal-title font-bold" id="chatModalLabel" data-key="treasuryLink">直连督财府</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="chat-box bg-gray-800 p-4 rounded mb-3" id="chatBox" style="height: 300px; overflow-y: auto;">
-                        <div class="message ai-message bg-yellow-900 text-light p-3 rounded mb-2">
-                            <strong>金禄星君：</strong> 欢迎使用天地银行直连督财府服务！我是金禄星君，掌管天庭财富分配。请问有什么可以帮您的？
-                        </div>
-                    </div>
-                    <form onsubmit="event.preventDefault(); sendMessage();" class="mt-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-gray-800 text-light border-yellow-700" 
-                                   id="chatInput" placeholder="输入您的请求..." required>
-                            <button type="submit" class="btn btn-primary" data-key="send">
-                                <i class="fas fa-paper-plane me-1"></i> 发送
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -837,54 +816,7 @@
             }
         }
 
-        async function sendMessage() {
-            const input = document.getElementById("chatInput").value;
-            const chatBox = document.getElementById("chatBox");
-            
-            if (!input.trim()) return;
-            
-            // 添加用户消息
-            const userMessage = document.createElement("div");
-            userMessage.className = "message user-message bg-gray-700 text-light p-3 rounded mb-2 text-end";
-            userMessage.innerHTML = `<strong>您：</strong> ${input}`;
-            chatBox.appendChild(userMessage);
-            
-            // 清空输入框
-            document.getElementById("chatInput").value = "";
-            
-            // 滚动到底部
-            chatBox.scrollTop = chatBox.scrollHeight;
-            
-            // 添加加载指示器
-            const loadingMessage = document.createElement("div");
-            loadingMessage.className = "message ai-message bg-yellow-900 text-light p-3 rounded mb-2";
-            loadingMessage.innerHTML = `<strong>金禄星君：</strong> <i class="fas fa-spinner fa-spin"></i> 正在思考中...`;
-            chatBox.appendChild(loadingMessage);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            
-            // 模拟AI响应
-            setTimeout(() => {
-                // 移除加载指示器
-                chatBox.removeChild(loadingMessage);
-                
-                // 添加AI响应
-                const responses = [
-                    "您的请求已受理，正在为您处理...",
-                    "阴阳两界转账需要三界通行令，您是否已获取？",
-                    "根据您的功德值，本月可享受特殊利率优惠！",
-                    "您最近的香火供奉增加了50功德值，继续保持！",
-                    "三界转账通道正常，可随时进行跨世转账操作。"
-                ];
-                
-                const aiMessage = document.createElement("div");
-                aiMessage.className = "message ai-message bg-yellow-900 text-light p-3 rounded mb-2";
-                aiMessage.innerHTML = `<strong>金禄星君：</strong> ${responses[Math.floor(Math.random() * responses.length)]}`;
-                chatBox.appendChild(aiMessage);
-                
-                // 滚动到底部
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 2000);
-        }
+       
 
         // 初始化页面
         document.addEventListener('DOMContentLoaded', function() {
