@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天地银行 - 用户后台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #001529, #0a1929);
+            color: #e0d0a0;
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .navbar {
+            background: linear-gradient(90deg,#FFD700,#FFEC8B,#FFD700);
+            background-size: 200% 100%;
+            animation: shine 3s linear infinite;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes shine {
+            0%,100%{background-position:0% 50%}100%{background-position:100% 50%}
+        }
+        .navbar-brand, .nav-link.navbar-top {
+            color: #000 !important;
+            transition: color 0.3s;
+            font-weight: bold;
+        }
+        .nav-link.navbar-top:hover {
+            color: #5c4200 !important;
+        }
+        .sidebar {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #d4af37;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            overflow-y: auto;
+        }
+        .sidebar .nav-link {
+            color: #e0d0a0 !important;
+            transition: all 0.3s;
+            padding: 12px 15px;
+            border-bottom: 1px solid #333;
+            position: relative;
+            padding-left: 25px;
+        }
+        .sidebar .nav-link:before {
+            content: "»";
+            position: absolute;
+            left: 10px;
+            color: #d4af37;
+        }
+        .sidebar .nav-link:hover {
+            color: #d4af37 !important;
+            padding-left: 30px;
+        }
+        .sidebar h4 {
+            color: #d4af37;
+            font-size: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 15px;
+        }
+        .content {
+            margin-left: 270px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #d4af37;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .card:hover {
+            transform: rotateY(5deg) rotateX(2deg);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.3);
+        }
+        .card h3 {
+            color: #d4af37;
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .btn-primary {
+            background-color: #d4af37;
+            border-color: #b8951d;
+            color: #000;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #b8951d;
+            border-color: #9e7e16;
+            transform: scale(1.05);
+        }
+        .form-control {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid #d4af37;
+            color: #e0d0a0;
+        }
+        .form-control:focus {
+            background: rgba(40, 40, 40, 0.9);
+            border-color: #ffd700;
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        }
+        footer {
+            background: rgba(10, 10, 10, 0.95);
+            color: #e0d0a0;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 2px solid #d4af37;
+        }
+        /* 幽灵背景 */
+        .ghost {
+            position: relative;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50% 50% 0 0;
+            animation: ghostFloat 4s ease-in-out infinite;
+        }
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 30px 0 0 rgba(0, 0, 0, 0.3);
+        }
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 50% 50%;
+            background: rgba(255, 255, 255, 0.1);
+            top: 80px;
+            left: 10px;
+        }
+        @keyframes ghostFloat {
+            0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}
+        }
+        /* 太极图标 */
+        .yin-yang {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #000 50%, #fff 50%);
+            margin-right: 15px;
+        }
+        .yin-yang::before, .yin-yang::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        .yin-yang::before {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border: 5px solid #fff;
+            top: 0;
+            left: 10px;
+        }
+        .yin-yang::after {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 5px solid #000;
+            bottom: 0;
+            left: 10px;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* 悬浮按钮 */
+        .quick-btn {
+            background: #d4af37;
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        .quick-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+        }
+        .stat-card {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #d4af37;
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        .stat-card h4 {
+            color: #d4af37;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                margin-bottom: 20px;
+            }
+            .content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- 浮动幽灵背景 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ghost absolute top-1/4 left-1/6 opacity-20" style="animation-delay: 0.5s;"></div>
+        <div class="ghost absolute top-1/3 right-1/5 opacity-15" style="animation-delay: 1s;"></div>
+        <div class="ghost absolute bottom-1/4 left-1/4 opacity-10" style="animation-delay: 1.5s;"></div>
+        <div class="ghost absolute bottom-1/3 right-1/6 opacity-15" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar py-4 shadow-lg relative z-10">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="yin-yang"></div>
+                <h1 class="text-2xl md:text-3xl font-bold text-black">
+                    天地银行 <span class="text-sm block md:inline">用户后台系统</span>
+                </h1>
+            </div>
+            <div class="flex items-center">
+                <select class="form-select language-select bg-black bg-opacity-30 text-black" onchange="changeLanguage(this.value)">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                </select>
+                <button class="btn btn-outline-dark ms-2 font-bold" onclick="logout()">退出</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-3 sidebar">
+                <h4 data-key="menu">功能菜单</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('overview')" data-key="dashboard"><i class="fas fa-tachometer-alt me-2"></i> 概览</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('recharge')" data-key="recharge"><i class="fas fa-coins me-2"></i> 充值</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('sixRealms')" data-key="sixRealms"><i class="fas fa-infinity me-2"></i> 六道轮回</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('transactions')" data-key="transactions"><i class="fas fa-history me-2"></i> 交易记录</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('transfer')" data-key="transfer"><i class="fas fa-exchange-alt me-2"></i> 转账</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('talisman')" data-key="talisman"><i class="fas fa-scroll me-2"></i> 符箓购买</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('threeRealmsTransfer')" data-key="threeRealmsTransfer"><i class="fas fa-globe-asia me-2"></i> 三界转账</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('currencyExchange')" data-key="currencyExchange"><i class="fas fa-money-bill-wave me-2"></i> 货币兑换</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('offerBuddha')" data-key="offerBuddha"><i class="fas fa-hands-praying me-2"></i> 供佛</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('contacts')" data-key="contacts"><i class="fas fa-address-book me-2"></i> 通讯录</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showChatModal()" data-key="treasuryLink"><i class="fas fa-landmark me-2"></i> 直连督财府</a></li>
+                </ul>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="col-md-9 content">
+                <!-- 概览 -->
+                <div class="card" id="overview">
+                    <h3 data-key="dashboard">用户概览</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="stat-card">
+                            <h4 data-key="incenseToday">香火余额</h4>
+                            <div class="value">5,000 <span class="text-sm">柱</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>功德值</h4>
+                            <div class="value">300</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>天仙积分</h4>
+                            <div class="value">1,250</div>
+                        </div>
+                    </div>
+                    
+                    <h4 data-key="currencyRates">冥币兑换比例</h4>
+                    <ul id="exchangeRateList" class="mb-6">
+                        <li><i class="fas fa-yin-yang text-yellow-500 me-2"></i> 1 冥币 = 0.01 人民币 (¥)</li>
+                        <li><i class="fas fa-yin-yang text-yellow-500 me-2"></i> 1 冥币 = 0.0015 美元 ($)</li>
+                        <li><i class="fas fa-yin-yang text-yellow-500 me-2"></i> 1 冥币 = 10 天仙积分</li>
+                    </ul>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <h4 data-key="immortalNews">今日仙界新闻</h4>
+                            <div class="p-4 bg-gray-800 rounded-lg">
+                                <p class="mb-2"><i class="fas fa-newspaper text-yellow-500 me-2"></i> 天皇星发现新灵矿，预计提升丹药产量20%！</p>
+                                <p><i class="fas fa-newspaper text-yellow-500 me-2"></i> 地府宣布将开通新的阴阳转账通道</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 data-key="emperorPolicy">玉皇大帝政策</h4>
+                            <div class="p-4 bg-gray-800 rounded-lg">
+                                <p><i class="fas fa-scroll text-yellow-500 me-2"></i> 所有供佛捐献在本月增加50%功德值，快来参与吧！</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他功能区 -->
+                <div class="card hidden" id="recharge">
+                    <h3 data-key="recharge">冥币充值</h3>
+                    <form onsubmit="event.preventDefault(); recharge();">
+                        <div class="mb-4">
+                            <label for="rechargeAmount" class="form-label mb-2" data-key="amount">充值金额 (冥币)</label>
+                            <input type="number" class="form-control" id="rechargeAmount" placeholder="1000" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="rechargeBtn">充值</button>
+                    </form>
+                </div>
+
+                <div class="card hidden" id="sixRealms">
+                    <h3 data-key="sixRealms">六道轮回</h3>
+                    <p id="currentRealm" class="mb-4">当前状态：人界 (功德: 300)</p>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg" onclick="reincarnate()">开始轮回</button>
+                    </div>
+                    <p id="reincarnationResult" class="mt-4 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="transactions">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 data-key="transactions">交易记录</h3>
+                        <button class="btn btn-sm btn-outline-warning" onclick="deleteTransactions()" data-key="deleteTransactions">清空记录</button>
+                    </div>
+                    <ul id="transactionList" class="list-group">
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-exchange-alt me-2 text-yellow-500"></i> 2025-02-26 10:00: 转账 1000 冥币 至 二郎神 (账号: ERLANG123)</li>
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-shopping-cart me-2 text-yellow-500"></i> 2025-02-26 12:00: 购买 5 张符箓，花费 500 冥币</li>
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-coins me-2 text-yellow-500"></i> 2025-02-26 15:00: 充值 2000 冥币</li>
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-money-bill-wave me-2 text-yellow-500"></i> 2025-02-26 16:00: 兑换 1000 冥币 为 1.5 美元</li>
+                    </ul>
+                </div>
+
+                <div class="card hidden" id="transfer">
+                    <h3 data-key="transfer">阴阳转账</h3>
+                    <form onsubmit="event.preventDefault(); transfer();">
+                        <div class="mb-4">
+                            <label for="transferAccount" class="form-label mb-2" data-key="account">对方账号</label>
+                            <input type="text" class="form-control" id="transferAccount" placeholder="ERLANG123" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="transferAmount" class="form-label mb-2" data-key="amount">转账金额 (冥币)</label>
+                            <input type="number" class="form-control" id="transferAmount" placeholder="1000" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="transferBtn">确认转账</button>
+                    </form>
+                    <p id="transferResult" class="mt-3 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="talisman">
+                    <h3 data-key="talisman">符箓购买</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="p-4 border border-yellow-700 rounded-lg text-center">
+                                <i class="fas fa-shield-alt fa-3x text-yellow-500 mb-3"></i>
+                                <h5>平安符</h5>
+                                <p class="text-yellow-500">500 冥币</p>
+                                <button class="btn btn-sm btn-primary" onclick="buyTalisman('peace')">购买</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="p-4 border border-yellow-700 rounded-lg text-center">
+                                <i class="fas fa-piggy-bank fa-3x text-yellow-500 mb-3"></i>
+                                <h5>招财符</h5>
+                                <p class="text-yellow-500">800 冥币</p>
+                                <button class="btn btn-sm btn-primary" onclick="buyTalisman('wealth')">购买</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="talismanResult" class="mt-3 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="threeRealmsTransfer">
+                    <h3 data-key="threeRealmsTransfer">三界转账</h3>
+                    <form onsubmit="event.preventDefault(); threeRealmsTransfer();">
+                        <div class="mb-4">
+                            <label for="realm" class="form-label mb-2" data-key="realm">目标领域</label>
+                            <select class="form-select" id="realm">
+                                <option value="heaven">天界</option>
+                                <option value="human">人界</option>
+                                <option value="underworld">地界</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="realmAmount" class="form-label mb-2" data-key="amount">转账金额 (冥币)</label>
+                            <input type="number" class="form-control" id="realmAmount" placeholder="1000" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="transferBtn">确认转账</button>
+                    </form>
+                    <p id="realmTransferResult" class="mt-3 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="currencyExchange">
+                    <h3 data-key="currencyExchange">货币兑换</h3>
+                    <form onsubmit="event.preventDefault(); exchangeCurrency();">
+                        <div class="mb-4">
+                            <label for="exchangeType" class="form-label mb-2" data-key="exchangeType">兑换类型</label>
+                            <select class="form-select" id="exchangeType">
+                                <option value="toUSD">冥币转美元</option>
+                                <option value="toPoints">冥币转天仙积分</option>
+                                <option value="fromPoints">天仙积分转冥币</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="exchangeAmount" class="form-label mb-2" data-key="amount">兑换金额</label>
+                            <input type="number" class="form-control" id="exchangeAmount" placeholder="1000" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="exchangeBtn">确认兑换</button>
+                    </form>
+                    <p id="exchangeResult" class="mt-3 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="offerBuddha">
+                    <h3 data-key="offerBuddha">供佛</h3>
+                    <div class="text-center mb-4">
+                        <i class="fas fa-hands-praying fa-4x text-yellow-500"></i>
+                    </div>
+                    <form onsubmit="event.preventDefault(); offerBuddha();">
+                        <div class="mb-4">
+                            <label for="offeringAmount" class="form-label mb-2" data-key="amount">供奉金额 (冥币)</label>
+                            <input type="number" class="form-control" id="offeringAmount" placeholder="1000" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="offerBtn">确认供奉</button>
+                    </form>
+                    <p id="offerResult" class="mt-3 text-center"></p>
+                </div>
+
+                <div class="card hidden" id="contacts">
+                    <h3 data-key="contacts">通讯录</h3>
+                    <ul id="contactList" class="list-group mb-4">
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-user me-2 text-yellow-500"></i> 二郎神 (ERLANG123) - 天界</li>
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-user me-2 text-yellow-500"></i> 观音菩萨 (GUANYIN456) - 天界</li>
+                        <li class="list-group-item bg-transparent text-light border-yellow-800"><i class="fas fa-user me-2 text-yellow-500"></i> 阎罗王 (YANLUO789) - 地界</li>
+                    </ul>
+                    <h5 class="mb-3">添加新联系人</h5>
+                    <form onsubmit="event.preventDefault(); addContact();">
+                        <div class="mb-3">
+                            <label for="contactName" class="form-label" data-key="name">姓名</label>
+                            <input type="text" class="form-control" id="contactName" placeholder="姓名" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactAccount" class="form-label" data-key="account">账号</label>
+                            <input type="text" class="form-control" id="contactAccount" placeholder="账号" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" data-key="addContact">添加联系人</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="col-md-9 content" style="clear: both;">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="yin-yang mr-4"></div>
+                        <h2 class="text-xl font-bold text-yellow-500">天地银行</h2>
+                    </div>
+                    <p class="text-gray-500 mt-2">© 618-2025 天地银行 版权所有</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="./wechat.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="./weibo.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="./qq.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="./ghost-contact.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fas fa-ghost"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-800 text-center text-gray-500">
+                <p>重要提示：天地银行受天庭金融管理局和地府财政司共同监管，存款安全有保障。</p>
+                <p class="mt-2">冥币与人民币兑换汇率每日浮动，请以当日阎王殿公告为准。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 悬浮按钮 -->
+    <a href="./online-service.html" class="quick-btn">
+        <i class="fas fa-ghost text-2xl"></i>
+    </a>
+
+    <!-- 督财府对话模态框 -->
+    <div class="col-md-9 content modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-gray-900 border border-yellow-700">
+                <div class="modal-header bg-yellow-800 text-black">
+                    <h5 class="modal-title font-bold" id="chatModalLabel" data-key="treasuryLink">直连督财府</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-box bg-gray-800 p-4 rounded mb-3" id="chatBox" style="height: 300px; overflow-y: auto;">
+                        <div class="message ai-message bg-yellow-900 text-light p-3 rounded mb-2">
+                            <strong>金禄星君：</strong> 欢迎使用天地银行直连督财府服务！我是金禄星君，掌管天庭财富分配。请问有什么可以帮您的？
+                        </div>
+                    </div>
+                    <form onsubmit="event.preventDefault(); sendMessage();" class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-gray-800 text-light border-yellow-700" 
+                                   id="chatInput" placeholder="输入您的请求..." required>
+                            <button type="submit" class="btn btn-primary" data-key="send">
+                                <i class="fas fa-paper-plane me-1"></i> 发送
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const translations = {
+            zh: {
+                home: "首页",
+                dashboard: "概览",
+                menu: "功能菜单",
+                recharge: "充值",
+                sixRealms: "六道轮回",
+                transactions: "交易记录",
+                transfer: "转账",
+                talisman: "符箓购买",
+                deleteTransactions: "清空记录",
+                threeRealmsTransfer: "三界转账",
+                currencyExchange: "货币兑换",
+                offerBuddha: "供佛",
+                contacts: "通讯录",
+                treasuryLink: "直连督财府",
+                exchangeType: "兑换类型",
+                exchangeBtn: "兑换",
+                send: "发送",
+                incenseToday: "香火余额",
+                currencyRates: "冥币兑换比例",
+                immortalNews: "今日仙界新闻",
+                emperorPolicy: "玉皇大帝政策",
+                amount: "金额",
+                rechargeBtn: "充值",
+                transferBtn: "转账",
+                offerBtn: "供奉",
+                account: "账号",
+                realm: "目标领域",
+                name: "姓名",
+                addContact: "添加联系人"
+            },
+            en: {
+                home: "Home",
+                dashboard: "Dashboard",
+                menu: "Menu",
+                recharge: "Recharge",
+                sixRealms: "Six Realms",
+                transactions: "Transactions",
+                transfer: "Transfer",
+                talisman: "Talisman",
+                deleteTransactions: "Clear Records",
+                threeRealmsTransfer: "Three Realms Transfer",
+                currencyExchange: "Currency Exchange",
+                offerBuddha: "Offer to Buddha",
+                contacts: "Contacts",
+                treasuryLink: "Treasury Connect",
+                exchangeType: "Exchange Type",
+                exchangeBtn: "Exchange",
+                send: "Send",
+                incenseToday: "Incense Balance",
+                currencyRates: "Currency Rates",
+                immortalNews: "Immortal News",
+                emperorPolicy: "Emperor's Policy",
+                amount: "Amount",
+                rechargeBtn: "Recharge",
+                transferBtn: "Transfer",
+                offerBtn: "Offer",
+                account: "Account",
+                realm: "Target Realm",
+                name: "Name",
+                addContact: "Add Contact"
+            }
+        };
+
+        let balance = 5000; // 初始冥币余额
+        let merit = 300; // 初始功德值
+        let immortalPoints = 1250; // 初始天仙积分
+        const validAccounts = ["ERLANG123", "GUANYIN456", "YANLUO789"]; // 有效账号
+        let exchangeRates = {
+            CNY: 0.01, // 人民币
+            USD: 0.0015, // 美元
+            Points: 10 // 天仙积分
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll("[data-key]").forEach(element => {
+                const key = element.getAttribute("data-key");
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll(".card").forEach(card => card.classList.add("hidden"));
+            document.getElementById(sectionId).classList.remove("hidden");
+        }
+
+        function showChatModal() {
+            const modal = new bootstrap.Modal(document.getElementById('chatModal'));
+            modal.show();
+        }
+
+        function recharge() {
+            const amount = parseInt(document.getElementById("rechargeAmount").value);
+            if (isNaN(amount)) {
+                alert("请输入有效的金额");
+                return;
+            }
+            
+            balance += amount;
+            alert(`充值成功！当前冥币余额: ${balance}`);
+            
+            // 添加到交易记录
+            const transactionList = document.getElementById("transactionList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-coins me-2 text-yellow-500"></i> ${new Date().toLocaleString()}: 充值 ${amount} 冥币`;
+            transactionList.prepend(li);
+        }
+
+        function reincarnate() {
+            const realms = ["天界", "人界", "阿修罗", "畜生", "饿鬼", "地狱"];
+            const result = realms[Math.floor(Math.random() * realms.length)];
+            merit += 50;
+            
+            document.getElementById("currentRealm").textContent = `当前状态: ${result} (功德: ${merit})`;
+            document.getElementById("reincarnationResult").textContent = `轮回至: ${result}, 功德值: ${merit}`;
+        }
+
+        function deleteTransactions() {
+            if (confirm("确定要清空所有交易记录吗？")) {
+                document.getElementById("transactionList").innerHTML = "";
+            }
+        }
+
+        function transfer() {
+            const account = document.getElementById("transferAccount").value.toUpperCase();
+            const amount = parseInt(document.getElementById("transferAmount").value);
+            
+            if (!validAccounts.includes(account)) {
+                alert("无效账号！");
+                return;
+            }
+            
+            if (amount > balance) {
+                alert("冥币余额不足！");
+                return;
+            }
+            
+            balance -= amount;
+            const recipient = account === "ERLANG123" ? "二郎神" : account === "GUANYIN456" ? "观音菩萨" : "阎罗王";
+            
+            document.getElementById("transferResult").textContent = `成功转账 ${amount} 冥币 至 ${recipient}`;
+            
+            // 添加到交易记录
+            const transactionList = document.getElementById("transactionList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-exchange-alt me-2 text-yellow-500"></i> ${new Date().toLocaleString()}: 转账 ${amount} 冥币 至 ${recipient} (${account})`;
+            transactionList.prepend(li);
+        }
+
+        function buyTalisman(type) {
+            const cost = type === "peace" ? 500 : 800;
+            
+            if (cost > balance) {
+                alert("冥币余额不足！");
+                return;
+            }
+            
+            balance -= cost;
+            const talismanName = type === "peace" ? "平安符" : "招财符";
+            
+            document.getElementById("talismanResult").textContent = `成功购买 ${talismanName}，花费 ${cost} 冥币`;
+            
+            // 添加到交易记录
+            const transactionList = document.getElementById("transactionList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-shopping-cart me-2 text-yellow-500"></i> ${new Date().toLocaleString()}: 购买 ${talismanName}，花费 ${cost} 冥币`;
+            transactionList.prepend(li);
+        }
+
+        function threeRealmsTransfer() {
+            const realm = document.getElementById("realm").value;
+            const amount = parseInt(document.getElementById("realmAmount").value);
+            
+            if (amount > balance) {
+                alert("冥币余额不足！");
+                return;
+            }
+            
+            balance -= amount;
+            const realmName = realm === "heaven" ? "天界" : realm === "human" ? "人界" : "地界";
+            
+            document.getElementById("realmTransferResult").textContent = `成功转账 ${amount} 冥币 至 ${realmName}`;
+            
+            // 添加到交易记录
+            const transactionList = document.getElementById("transactionList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-globe-asia me-2 text-yellow-500"></i> ${new Date().toLocaleString()}: 三界转账 ${amount} 冥币 至 ${realmName}`;
+            transactionList.prepend(li);
+        }
+
+        function offerBuddha() {
+            const amount = parseInt(document.getElementById("offeringAmount").value);
+            
+            if (amount > balance) {
+                alert("冥币余额不足！");
+                return;
+            }
+            
+            balance -= amount;
+            merit += amount * 1.5; // 政策加成50%
+            
+            document.getElementById("offerResult").textContent = `供奉成功！获得 ${(amount * 1.5).toFixed(0)} 功德值`;
+            
+            // 添加到交易记录
+            const transactionList = document.getElementById("transactionList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-hands-praying me-2 text-yellow-500"></i> ${new Date().toLocaleString()}: 供佛 ${amount} 冥币`;
+            transactionList.prepend(li);
+        }
+
+        function addContact() {
+            const name = document.getElementById("contactName").value;
+            const account = document.getElementById("contactAccount").value.toUpperCase();
+            
+            if (!name || !account) {
+                alert("请填写完整信息");
+                return;
+            }
+            
+            const contactList = document.getElementById("contactList");
+            const li = document.createElement("li");
+            li.className = "list-group-item bg-transparent text-light border-yellow-800";
+            li.innerHTML = `<i class="fas fa-user me-2 text-yellow-500"></i> ${name} (${account})`;
+            contactList.appendChild(li);
+            
+            alert(`联系人 ${name} 添加成功！`);
+            
+            // 清空表单
+            document.getElementById("contactName").value = "";
+            document.getElementById("contactAccount").value = "";
+        }
+
+        function exchangeCurrency() {
+            const type = document.getElementById("exchangeType").value;
+            const amount = parseInt(document.getElementById("exchangeAmount").value);
+            let result;
+            
+            if (type === "toUSD" && amount <= balance) {
+                const usdAmount = amount * exchangeRates.USD;
+                balance -= amount;
+                result = `兑换成功！获得 ${usdAmount.toFixed(4)} 美元`;
+            } else if (type === "toPoints" && amount <= balance) {
+                const points = amount * exchangeRates.Points;
+                balance -= amount;
+                immortalPoints += points;
+                result = `兑换成功！获得 ${points} 天仙积分`;
+            } else if (type === "fromPoints" && amount <= immortalPoints) {
+                const mcAmount = amount / exchangeRates.Points;
+                immortalPoints -= amount;
+                balance += mcAmount;
+                result = `兑换成功！获得 ${mcAmount.toFixed(2)} 冥币`;
+            } else {
+                result = "余额不足或输入无效！";
+            }
+            
+            document.getElementById("exchangeResult").textContent = result;
+        }
+
+        function logout() {
+            if (confirm("确定要退出登录吗？")) {
+                window.location.href = "index.html";
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("chatInput").value;
+            const chatBox = document.getElementById("chatBox");
+            
+            if (!input.trim()) return;
+            
+            // 添加用户消息
+            const userMessage = document.createElement("div");
+            userMessage.className = "message user-message bg-gray-700 text-light p-3 rounded mb-2 text-end";
+            userMessage.innerHTML = `<strong>您：</strong> ${input}`;
+            chatBox.appendChild(userMessage);
+            
+            // 清空输入框
+            document.getElementById("chatInput").value = "";
+            
+            // 滚动到底部
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // 添加加载指示器
+            const loadingMessage = document.createElement("div");
+            loadingMessage.className = "message ai-message bg-yellow-900 text-light p-3 rounded mb-2";
+            loadingMessage.innerHTML = `<strong>金禄星君：</strong> <i class="fas fa-spinner fa-spin"></i> 正在思考中...`;
+            chatBox.appendChild(loadingMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // 模拟AI响应
+            setTimeout(() => {
+                // 移除加载指示器
+                chatBox.removeChild(loadingMessage);
+                
+                // 添加AI响应
+                const responses = [
+                    "您的请求已受理，正在为您处理...",
+                    "阴阳两界转账需要三界通行令，您是否已获取？",
+                    "根据您的功德值，本月可享受特殊利率优惠！",
+                    "您最近的香火供奉增加了50功德值，继续保持！",
+                    "三界转账通道正常，可随时进行跨世转账操作。"
+                ];
+                
+                const aiMessage = document.createElement("div");
+                aiMessage.className = "message ai-message bg-yellow-900 text-light p-3 rounded mb-2";
+                aiMessage.innerHTML = `<strong>金禄星君：</strong> ${responses[Math.floor(Math.random() * responses.length)]}`;
+                chatBox.appendChild(aiMessage);
+                
+                // 滚动到底部
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 2000);
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认显示概览
+            showSection('overview');
+        });
+    </script>
+</body>
+</html>
