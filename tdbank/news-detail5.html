@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天地银行 - 新闻列表</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com "></script>
+
+    <!-- 公共样式 -->
+    <style>
+        /* 从主界面复制过来的公共样式 */
+        @keyframes float {
+            0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}
+        }
+        @keyframes shine {
+            0%,100%{background-position:0% 50%}100%{background-position:100% 50%}
+        }
+        .gold-gradient { 
+            background:linear-gradient(90deg,#FFD700,#FFEC8B,#FFD700);
+            background-size:200% 100%;
+            animation:shine 3s linear infinite; 
+        }
+        .float-animation { animation: float 6s ease-in-out infinite; }
+        .bank-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .bank-card:hover {
+            transform: rotateY(15deg) rotateX(5deg);
+            box-shadow: 0 20px 30px rgba(255, 215, 0, 0.4);
+        }
+        .yin-yang {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #000 50%, #fff 50%);
+        }
+        .yin-yang::before, .yin-yang::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+        .yin-yang::before {
+            width: 50px;
+            height: 50px;
+            background: #000;
+            border: 15px solid #fff;
+            top: 0;
+            left: 25px;
+        }
+        .yin-yang::after {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border: 15px solid #000;
+            bottom: 0;
+            left: 25px;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ghost {
+            position: relative;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50% 50% 0 0;
+            animation: ghostFloat 4s ease-in-out infinite;
+        }
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 30px 0 0 #000;
+        }
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 50% 50%;
+            background: rgba(255, 255, 255, 0.8);
+            top: 80px;
+            left: 10px;
+        }
+        @keyframes ghostFloat {
+            0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* 整合样式 */
+        .login-box {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #d4af37;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 220px;
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .login-tit {
+            background: #d4af37;
+            color: #000;
+            padding: 10px;
+            font-weight: bold;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .login-close {
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .login-list ul {
+            list-style: none;
+        }
+        .login-list ul li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+        }
+        .login-list ul li:last-child {
+            border-bottom: none;
+        }
+        .login-list ul li a {
+            color: #e0d0a0;
+            text-decoration: none;
+            display: block;
+            padding-left: 25px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .login-list ul li a:before {
+            content: "»";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+        .login-list ul li a:hover {
+            color: #d4af37;
+            padding-left: 30px;
+        }
+        .news-section {
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid #d4af37;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .news-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .news-lists {
+            color: #e0d0a0;
+            padding: 12px 0;
+            border-bottom: 1px dashed #444;
+        }
+        .news-lists a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+        .news-lists a:hover {
+            color: #ffec8b;
+            padding-left: 5px;
+        }
+        .btn-more {
+            color: #d4af37;
+            text-decoration: none;
+            float: right;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn-more:hover {
+            color: #ffec8b;
+        }
+        .services-section {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #d4af37;
+            padding: 30px 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .services-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .service-item {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .service-icon {
+            font-size: 40px;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+        .service-name {
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .service-desc {
+            color: #e0d0a0;
+            font-size: 14px;
+        }
+        .feature-box {
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        @media (max-width: 768px) {
+            .login-box {
+                top: 80px;
+                right: 10px;
+                width: 180px;
+            }
+            .news-section, .services-section {
+                margin: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- 浮动幽灵背景 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ghost absolute top-1/4 left-1/6 opacity-30" style="animation-delay: 0.5s;"></div>
+        <div class="ghost absolute top-1/3 right-1/5 opacity-20" style="animation-delay: 1s;"></div>
+        <div class="ghost absolute bottom-1/4 left-1/4 opacity-25" style="animation-delay: 1.5s;"></div>
+        <div class="ghost absolute bottom-1/3 right-1/6 opacity-15" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- 登录框 -->
+    <div class="login-box">
+        <div class="login-tit">
+            天地银行服务通道
+        </div>
+        <div class="login-list">
+            <ul>
+                <li><a href="./personal-login.html" title="个人客户登录">个人客户登录</a></li>
+                <li><a href="./family-login.html" title="家族账户登录">家族账户登录</a></li>
+                <li><a href="./underworld-login.html" title="地府机构登录">地府机构登录</a></li>
+                <li><a href="./afterlife-service.html" title="往生者服务">往生者服务</a></li>
+                <li><a href="./currency-exchange.html" title="冥币兑换">冥币兑换</a></li>
+                <li><a href="./yin-yang-transfer.html" title="阴阳转账">阴阳转账</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="gold-gradient py-6 shadow-lg relative z-10">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="yin-yang mr-4"></div>
+                <h1 class="text-3xl md:text-4xl font-bold text-black">
+                    天地银行 <span class="text-sm block md:inline">阴阳两界金融服务</span>
+                </h1>
+            </div>
+            <nav class="flex space-x-1 md:space-x-4">
+                <a href="./index.html" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">首页</a>
+                <a href="#services" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">服务项目</a>
+                <a href="#about" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">关于我们</a>
+                <a href="#contact" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 页面内容区域 -->
+    <section class="py-20 bg-gray-900">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="bg-gray-800 p-8 rounded-xl border border-yellow-900 shadow-2xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">新版冥界通APP上线公告</h1>
+                <div class="text-gray-400 mb-8 flex flex-wrap justify-between items-center border-b border-gray-700 pb-4">
+                    <span>发布时间：2025-07-15</span>
+                    <span class="text-sm bg-yellow-900 text-yellow-400 px-3 py-1 rounded-full">产品升级</span>
+                </div>
+                
+                <div class="prose prose-invert max-w-none text-gray-300">
+                    <p class="text-lg mb-6">尊敬的阴阳两界用户：</p>
+                    
+                    <p>天地银行隆重推出<strong class="text-yellow-400">"冥界通"3.0版本APP</strong>，本次重大升级融合三界最新金融科技，为您带来更便捷的阴阳金融服务体验，让沟通生死界限从未如此简单。</p>
+                    
+                    <div class="bg-gray-700 p-5 rounded-lg my-8 border-l-4 border-yellow-500">
+                        <h3 class="text-xl font-bold text-yellow-400 mb-3">✨ 核心新功能</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-yellow-400 mb-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
+                                    </svg>
+                                    阴阳汇率
+                                </h4>
+                                <p>实时查看人民币↔冥币汇率波动，支持设置汇率提醒</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-yellow-400 mb-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd" />
+                                    </svg>
+                                    云端祭祀
+                                </h4>
+                                <p>创建虚拟祭坛，在线焚香烧纸，支持VR沉浸式祭拜</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-yellow-400 mb-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="CurrentColor">
+                                        <path fill-rule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clip-rule="evenodd" />
+                                    </svg>
+                                    防伪验证
+                                </h4>
+                                <p>扫描冥币二维码验证真伪，自动报告可疑假币</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-yellow-400 mb-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    往生通讯
+                                </h4>
+                                <p>阴阳两界加密信息通道（需双方开通VIP服务）</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-10 mb-4 text-yellow-400">🆚 版本对比</h2>
+                    <div class="overflow-x-auto my-6">
+                        <table class="min-w-full border-collapse">
+                            <thead>
+                                <tr class="bg-gray-700">
+                                    <th class="border border-gray-600 px-4 py-3 text-left">功能</th>
+                                    <th class="border border-gray-600 px-4 py-3 text-center">2.0版</th>
+                                    <th class="border border-gray-600 px-4 py-3 text-center text-yellow-400">3.0版</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-gray-800">
+                                    <td class="border border-gray-700 px-4 py-3">跨阴阳转账</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center">✓</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center text-yellow-400 font-bold">✓ 实时到账</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <td class="border border-gray-700 px-4 py-3">地府账户管理</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center">✓</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center text-yellow-400 font-bold">✓ 支持多账户</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <td class="border border-gray-700 px-4 py-3">功德分查询</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center">✓</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center text-yellow-400 font-bold">✓ 预测分析</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <td class="border border-gray-700 px-4 py-3">云端祭祀</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center">基本版</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center text-yellow-400 font-bold">VR沉浸式</td>
+                                </tr>
+                                <tr class="bg-gray-800">
+                                    <td class="border border-gray-700 px-4 py-3">轮回咨询</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center">✗</td>
+                                    <td class="border border-gray-700 px-4 py-3 text-center text-yellow-400 font-bold">✓ AI判官</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold mt-10 mb-4 text-yellow-400">📲 升级指南</h2>
+                    <div class="grid md:grid-cols-2 gap-6 my-6">
+                        <div class="bg-gray-700 p-5 rounded-lg">
+                            <h3 class="text-lg font-bold text-yellow-400 mb-3">阳间用户</h3>
+                            <ol class="space-y-2">
+                                <li>1. 打开手机应用商店</li>
+                                <li>2. 搜索"冥界通"</li>
+                                <li>3. 点击"更新"按钮</li>
+                                <li>4. 使用原账号登录</li>
+                            </ol>
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-black text-yellow-400 rounded">App Store</span>
+                                <span class="px-3 py-1 bg-black text-green-400 rounded">安卓市场</span>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-5 rounded-lg">
+                            <h3 class="text-lg font-bold text-yellow-400 mb-3">阴间用户</h3>
+                            <ol class="space-y-2">
+                                <li>1. 前往望乡台信号区</li>
+                                <li>2. 打开"阴阳通"APP</li>
+                                <li>3. 接收强制更新推送</li>
+                                <li>4. 确认魂魄绑定</li>
+                            </ol>
+                            <div class="mt-4">
+                                <p class="text-sm">注：奈河桥以东区域需前往判官殿更新点</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-900/30 p-5 rounded-lg my-8">
+                        <h3 class="text-xl font-bold text-yellow-400 mb-3">🎁 升级福利</h3>
+                        <ul class="space-y-3">
+                            <li>
+                                <strong>首周升级：</strong>赠10亿冥币+100功德分
+                            </li>
+                            <li>
+                                <strong>邀请好友：</strong>每成功邀请1位得5%利率券
+                            </li>
+                            <li>
+                                <strong>反馈建议：</strong>采纳后可获轮回加速机会
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-10 text-center">
+                        <div class="inline-block bg-gray-700 p-5 rounded-xl">
+                            <div class="text-yellow-400 font-bold mb-3">扫码体验</div>
+                            <div class="bg-white p-2 inline-block rounded">
+                                <div class="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32" >
+                            </div>
+                            <p class="mt-3 text-sm">冥界通3.0官方下载码</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 pt-6 border-t border-gray-700 flex flex-col sm:flex-row justify-between gap-4">
+                    <a href="./news.html" class="px-5 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-yellow-400 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        返回新闻列表
+                    </a>
+                    <button onclick="window.print()" class="px-5 py-3 bg-yellow-900 hover:bg-yellow-800 rounded-lg text-yellow-400 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                        </svg>
+                        打印此页
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 底部 -->
+    <footer class="bg-gray-900 py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="yin-yang mr-4"></div>
+                        <h2 class="text-2xl font-bold text-yellow-500">天地银行</h2>
+                    </div>
+                    <p class="text-gray-500 mt-2">© 618-2023 天地银行 版权所有</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="./wechat.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="./weibo.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="./qq.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="./ghost-contact.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fas fa-ghost"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500">
+                <p>重要提示：天地银行受天庭金融管理局和地府财政司共同监管，存款安全有保障。</p>
+                <p class="mt-2">冥币与人民币兑换汇率每日浮动，请以当日阎王殿公告为准。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 快捷按钮 -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <a href="./online-service.html" class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+            <i class="fas fa-ghost text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- 脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, { threshold: 0.1 });
+            fadeElements.forEach(el => {
+                el.style.opacity = 0;
+                observer.observe(el);
+            });
+
+            // Login close button
+            const closeBtn = document.querySelector('.login-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.login-box').style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
