@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="zh">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>天地银行 - 新闻详情</title>
+    <title>天地银行 - 新闻列表</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <head>
+<head>
     <!-- 引入 Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
 
@@ -314,61 +313,96 @@
     </header>
 
     <!-- 页面内容区域 -->
-    <section class="py-20 bg-gray-900">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-10 text-yellow-400 text-center">最新公告与新闻</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 新闻条目1 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">【重要通知】中元节冥币兑换特别通道已开启</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-08-15</p>
-                    <p class="text-gray-300">即日起至中元节后七日，开通阳间冥币兑换快线，支持人民币/金银元宝兑换，确保孝心准时送达地府账户。</p>
-                    <a href="./news-detail.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
+<!-- 新闻详情页1：新版冥币发行 -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="bg-gray-800 p-8 rounded-xl border border-yellow-900 shadow-2xl">
+            <h1 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400">天地银行新版"亿万元"冥币正式发行</h1>
+            <div class="text-gray-400 mb-8 flex flex-wrap justify-between items-center border-b border-gray-700 pb-4">
+                <span>发布时间：2025-08-10</span>
+                <span class="text-sm bg-yellow-900 text-yellow-400 px-3 py-1 rounded-full">产品发布</span>
+            </div>
+            
+            <div class="prose prose-invert max-w-none text-gray-300">
+                <p class="text-lg mb-6">尊敬的阴阳两界客户：</p>
+                
+                <p>为满足地府日益增长的大额金融需求，天地银行正式推出全新设计的<strong class="text-yellow-400">"亿万元"面值冥币</strong>，此版冥币采用幽冥界尖端防伪技术，将成为祭祀供奉、阴间投资的硬通货。</p>
+                
+                <div class="bg-gray-700 p-5 rounded-lg my-8 border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-3">新版冥币核心特性</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-yellow-400 mr-2">✓</span>
+                            <span><strong>九重防伪技术：</strong>采用幽冥荧光油墨+阴阳双轨水印+功德二维码</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-yellow-400 mr-2">✓</span>
+                            <span><strong>特殊材质：</strong>三途河纤维纸基，触感冰凉且耐阴间腐蚀</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-yellow-400 mr-2">✓</span>
+                            <span><strong>智能流通：</strong>内置阴阳通芯片，可被地府ATM自动识别</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-yellow-400 mr-2">✓</span>
+                            <span><strong>祥瑞设计：</strong>正面为十殿阎罗联合印章，背面为往生莲花图腾</span>
+                        </li>
+                    </ul>
                 </div>
                 
-                <!-- 新闻条目2 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">天地银行新版"亿万元"冥币正式发行</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-08-10</p>
-                    <p class="text-gray-300">全新防伪亿万元大额冥币上市，采用幽冥加密技术，满足大宗祭祀与地府投资需求，即日起各分行可兑换。</p>
-                    <a href="./news-detail1.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
+                <h2 class="text-2xl font-bold mt-10 mb-4 text-yellow-400">兑换指南</h2>
+                <div class="grid md:grid-cols-2 gap-6 my-6">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="text-lg font-bold text-yellow-400 mb-2">阳间兑换</h3>
+                        <ul class="space-y-2">
+                            <li>1:10000比例兑换（1元人民币=1万冥币）</li>
+                            <li>天地银行授权香烛店（带防伪标识）</li>
+                            <li>阴阳通APP"云祭祀"专区</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="text-lg font-bold text-yellow-400 mb-2">阴间兑换</h3>
+                        <ul class="space-y-2">
+                            <li>1功德分=10亿冥币（限首月）</li>
+                            <li>地府各分行VIP窗口</li>
+                            <li>三途河航运码头特设兑换点</li>
+                        </ul>
+                    </div>
                 </div>
                 
-                <!-- 新闻条目3 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">地府信贷推出"往生无忧"还款计划</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-08-05</p>
-                    <p class="text-gray-300">全新专项还款援助计划，支持延长周期/利息减免，助您轻装转世轮回。凭功德记录可享阶梯优惠。</p>
-                    <a href="./news-detail2.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
+                <div class="bg-yellow-900/30 p-5 rounded-lg my-8">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-3">⚠️ 重要提示</h3>
+                    <ul class="space-y-2">
+                        <li>认准冥币右下角激光防伪标志（紫光灯下显"天地"篆文）</li>
+                        <li>单次兑换超1000亿需提前预约</li>
+                        <li>旧版"千万级"冥币将于孟兰节后停止流通</li>
+                        <li>发现假币请立即联系无常缉查司</li>
+                    </ul>
                 </div>
                 
-                <!-- 新闻条目4 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">清明节期间阴阳转账手续费全免</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-07-28</p>
-                    <p class="text-gray-300">2026年清明特惠：所有阳间至阴间转账免手续费，零成本传递孝心与财富，请提前规划善用此期。</p>
-                    <a href="./news-detail3.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
-                </div>
-                
-                <!-- 新闻条目5 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">天地银行荣获"冥界最佳金融机构"称号</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-07-20</p>
-                    <p class="text-gray-300">获十殿阎罗联合授予最高荣誉，表彰我行在跨阴阳服务、风险管控及金融创新的卓越成就。</p>
-                    <a href="./news-detail4.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
-                </div>
-                
-                <!-- 新闻条目6 -->
-                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-yellow-500/20 transition-all duration-300 border border-yellow-900">
-                    <h3 class="text-xl font-bold mb-2 text-yellow-400">新版冥界通APP上线公告</h3>
-                    <p class="text-gray-400 mb-4">发布时间：2025-07-15</p>
-                    <p class="text-gray-300">天地银行官方APP"冥界通"3.0版本上线，新增阴阳实时汇率查询、云端祭祀、冥币防伪验证等功能。</p>
-                    <a href="./news-detail5.html" class="mt-4 inline-block text-yellow-400 hover:underline">查看详情 →</a>
-                </div>
+                <p class="italic mt-6">天地银行承诺：新版冥币通行三界，让每一份孝心都保值增值。</p>
+            </div>
+            
+            <div class="mt-12 pt-6 border-t border-gray-700 flex flex-col sm:flex-row justify-between gap-4">
+                <a href="./news.html" class="px-5 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-yellow-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                    </svg>
+                    返回新闻列表
+                </a>
+                <button onclick="window.print()" class="px-5 py-3 bg-yellow-900 hover:bg-yellow-800 rounded-lg text-yellow-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                    </svg>
+                    打印此页
+                </button>
             </div>
         </div>
-    </section>
-    <!-- 底部 --> 
+    </div>
+</section>
+
+
+    <!-- 底部 -->
     <footer class="bg-gray-900 py-12 border-t border-gray-800">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
