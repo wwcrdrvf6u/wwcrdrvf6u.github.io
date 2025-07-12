@@ -232,6 +232,11 @@
             color: #dc3545;
             border: 1px solid #dc3545;
         }
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
         
         /* 响应式调整 */
         @media (max-width: 768px) {
@@ -245,6 +250,10 @@
             }
             .chat-container {
                 height: 350px;
+            }
+            .api-key-container {
+                width: 90%;
+                left: 5%;
             }
         }
         
@@ -268,9 +277,97 @@
             border-color: #d4af37;
             box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
         }
+        
+        /* API Key输入容器 */
+        .api-key-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(20, 20, 20, 0.95);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 25px;
+            z-index: 2000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            width: 400px;
+            max-width: 90%;
+        }
+        .api-key-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .api-key-input {
+            background: rgba(40, 40, 40, 0.9);
+            border: 1px solid #d4af37;
+            color: #e0d0a0;
+            padding: 12px 15px;
+            border-radius: 6px;
+            width: 100%;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .api-key-input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+        }
+        .api-key-note {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen">
+    <!-- API Key输入模态框 -->
+    <div id="api-key-overlay" class="api-key-overlay" style="display: flex;">
+        <div class="api-key-container fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-yellow-400">
+                    <i class="fas fa-key mr-2"></i> 请输入您的OpenAI API Key
+                </h3>
+                <button id="close-api-key" class="text-gray-400 hover:text-yellow-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <p class="text-gray-400 mb-4">
+                为了保护您的API密钥安全，请在此输入您的OpenAI API密钥。
+                密钥将存储在您的浏览器本地，不会发送到任何其他服务器。
+            </p>
+            
+            <div class="relative">
+                <input type="password" id="api-key-input" class="api-key-input" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                <i class="fas fa-eye absolute right-3 top-4 text-gray-500 cursor-pointer" id="toggle-api-key"></i>
+            </div>
+            
+            <p class="api-key-note">
+                <i class="fas fa-info-circle mr-1"></i> 您可以在OpenAI官网获取API密钥
+            </p>
+            
+            <div class="flex gap-3">
+                <button id="save-api-key" class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black py-3 rounded-lg font-bold transition">
+                    <i class="fas fa-save mr-2"></i> 保存并连接
+                </button>
+                <button id="test-api-key" class="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold transition">
+                    <i class="fas fa-plug mr-2"></i> 测试连接
+                </button>
+            </div>
+            
+            <div id="api-key-status" class="mt-4 text-center"></div>
+        </div>
+    </div>
+
     <!-- 浮动幽灵背景 -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div class="ghost absolute top-1/4 left-1/6 opacity-30" style="animation-delay: 0.5s;"></div>
@@ -320,13 +417,16 @@
             <div class="flex flex-col md:flex-row items-center justify-between mb-8">
                 <div class="flex items-center mb-4 md:mb-0">
                     <h2 class="text-3xl font-bold text-yellow-400 mr-4">AI在线客服</h2>
-                    <div class="api-status status-connected">
-                        <i class="fas fa-circle mr-1"></i> OpenAI API 已连接
+                    <div id="api-status" class="api-status status-disconnected">
+                        <i class="fas fa-circle mr-1"></i> OpenAI API 未连接
                     </div>
                 </div>
                 
-                <div class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm font-bold pulse">
-                    <i class="fas fa-bolt mr-1"></i> 智能客服系统已激活
+                <div class="flex items-center">
+                    <button id="api-key-btn" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg font-bold flex items-center transition mr-3">
+                        <i class="fas fa-key mr-2"></i> 设置API密钥
+                    </button>
+
                 </div>
             </div>
             
@@ -338,7 +438,7 @@
                         </div>
                         <div>
                             <div class="font-bold text-yellow-400">判官小黑</div>
-                            您好！我是天地银行AI客服判官小黑，专门处理阴阳两界的金融事务。请问有什么可以帮您？
+                            您好！我是天地银行AI客服判官小黑，专门处理阴阳两界的金融事务。请先设置您的OpenAI API密钥以启用服务。
                         </div>
                     </div>
                 </div>
@@ -347,12 +447,10 @@
             
             <div class="flex gap-4 mb-6">
                 <div class="flex-1 relative">
-                    <input type="text" id="user-input" placeholder="输入您的问题..." class="w-full p-4 bg-gray-700 rounded-lg pr-12 focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                    <button id="voice-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-yellow-500">
-                        <i class="fas fa-microphone"></i>
-                    </button>
+                    <input type="text" id="user-input" placeholder="输入您的问题..." class="w-full p-4 bg-gray-700 rounded-lg pr-12 focus:outline-none focus:ring-2 focus:ring-yellow-500" disabled>
+
                 </div>
-                <button id="send-btn" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-4 rounded-lg font-bold flex items-center transition transform hover:scale-105">
+                <button id="send-btn" class="bg-gray-600 px-6 py-4 rounded-lg font-bold flex items-center" disabled>
                     <i class="fas fa-paper-plane mr-2"></i> 发送
                 </button>
             </div>
@@ -455,9 +553,191 @@
             const sendBtn = document.getElementById('send-btn');
             const voiceBtn = document.getElementById('voice-btn');
             const quickQuestions = document.querySelectorAll('.feature-card');
+            const apiStatus = document.getElementById('api-status');
+            const apiKeyBtn = document.getElementById('api-key-btn');
+            const apiKeyOverlay = document.getElementById('api-key-overlay');
+            const apiKeyInput = document.getElementById('api-key-input');
+            const saveApiKeyBtn = document.getElementById('save-api-key');
+            const testApiKeyBtn = document.getElementById('test-api-key');
+            const closeApiKey = document.getElementById('close-api-key');
+            const toggleApiKey = document.getElementById('toggle-api-key');
+            const apiKeyStatus = document.getElementById('api-key-status');
             
-            // 使用您的OpenAI API密钥
-            const apiKey = 'sk-jEPhryRvSscXiS7qKomcBselBjIQiB1Qkm65U1dUIy4QHnqT';
+            let apiKey = '';
+            let isApiKeyVisible = false;
+            
+            // 检查本地存储中是否有API Key
+            function checkLocalStorage() {
+                const savedApiKey = localStorage.getItem('tdyh-api-key');
+                if (savedApiKey) {
+                    apiKey = savedApiKey;
+                    apiKeyInput.value = savedApiKey;
+                    testApiConnection();
+                } else {
+                    // 如果没有保存的API Key，显示输入框
+                    apiKeyOverlay.style.display = 'flex';
+                }
+            }
+            
+            // 切换API Key可见性
+            toggleApiKey.addEventListener('click', () => {
+                isApiKeyVisible = !isApiKeyVisible;
+                apiKeyInput.type = isApiKeyVisible ? 'text' : 'password';
+                toggleApiKey.className = isApiKeyVisible ? 
+                    'fas fa-eye-slash absolute right-3 top-4 text-gray-500 cursor-pointer' : 
+                    'fas fa-eye absolute right-3 top-4 text-gray-500 cursor-pointer';
+            });
+            
+            // 打开API Key设置
+            apiKeyBtn.addEventListener('click', () => {
+                apiKeyOverlay.style.display = 'flex';
+                apiKeyInput.focus();
+            });
+            
+            // 关闭API Key设置
+            closeApiKey.addEventListener('click', () => {
+                apiKeyOverlay.style.display = 'none';
+            });
+            
+            // 保存API Key
+            saveApiKeyBtn.addEventListener('click', () => {
+                const key = apiKeyInput.value.trim();
+                if (!key) {
+                    showApiKeyStatus('请输入有效的API Key', 'error');
+                    return;
+                }
+                
+                if (!key.startsWith('sk-')) {
+                    showApiKeyStatus('API Key格式不正确，应以sk-开头', 'error');
+                    return;
+                }
+                
+                apiKey = key;
+                localStorage.setItem('tdyh-api-key', key);
+                testApiConnection();
+                apiKeyOverlay.style.display = 'none';
+            });
+            
+            // 测试API连接
+            testApiKeyBtn.addEventListener('click', async () => {
+                const key = apiKeyInput.value.trim();
+                if (!key) {
+                    showApiKeyStatus('请输入有效的API Key', 'error');
+                    return;
+                }
+                
+                if (!key.startsWith('sk-')) {
+                    showApiKeyStatus('API Key格式不正确，应以sk-开头', 'error');
+                    return;
+                }
+                
+                showApiKeyStatus('正在测试连接...', 'pending');
+                
+                try {
+                    const response = await fetch('https://api.openai.com/v1/models', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${key}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        showApiKeyStatus('连接成功！API Key有效', 'success');
+                    } else {
+                        const errorData = await response.json();
+                        showApiKeyStatus(`连接失败: ${errorData.error?.message || '未知错误'}`, 'error');
+                    }
+                } catch (error) {
+                    showApiKeyStatus('网络错误，请检查网络连接', 'error');
+                    console.error("API测试错误:", error);
+                }
+            });
+            
+            // 显示API Key状态
+            function showApiKeyStatus(message, type) {
+                apiKeyStatus.textContent = message;
+                apiKeyStatus.className = '';
+                
+                switch (type) {
+                    case 'success':
+                        apiKeyStatus.classList.add('text-green-500');
+                        break;
+                    case 'error':
+                        apiKeyStatus.classList.add('text-red-500');
+                        break;
+                    case 'pending':
+                        apiKeyStatus.classList.add('text-yellow-500');
+                        break;
+                }
+            }
+            
+            // 测试API连接状态
+            async function testApiConnection() {
+                if (!apiKey) return;
+                
+                updateApiStatus('pending', '正在检测API连接...');
+                
+                try {
+                    const response = await fetch('https://api.openai.com/v1/models', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        updateApiStatus('connected', 'OpenAI API 已连接');
+                        enableChatInterface();
+                    } else {
+                        const errorData = await response.json();
+                        updateApiStatus('disconnected', `连接失败: ${errorData.error?.message || '未知错误'}`);
+                        disableChatInterface();
+                    }
+                } catch (error) {
+                    updateApiStatus('disconnected', '网络错误，请检查网络连接');
+                    disableChatInterface();
+                    console.error("API连接测试错误:", error);
+                }
+            }
+            
+            // 更新API状态显示
+            function updateApiStatus(status, message) {
+                apiStatus.innerHTML = `<i class="fas fa-circle mr-1"></i> ${message}`;
+                apiStatus.className = 'api-status';
+                
+                switch (status) {
+                    case 'connected':
+                        apiStatus.classList.add('status-connected');
+                        break;
+                    case 'disconnected':
+                        apiStatus.classList.add('status-disconnected');
+                        break;
+                    case 'pending':
+                        apiStatus.classList.add('status-pending');
+                        break;
+                }
+            }
+            
+            // 启用聊天界面
+            function enableChatInterface() {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                voiceBtn.disabled = false;
+                sendBtn.className = 'bg-yellow-500 hover:bg-yellow-600 px-6 py-4 rounded-lg font-bold flex items-center transition transform hover:scale-105';
+                
+                // 添加欢迎消息
+                setTimeout(() => {
+                    addMessage("API连接成功！我是判官小黑，现在可以为您提供阴阳两界的金融服务了。请问有什么可以帮您？", false);
+                }, 500);
+            }
+            
+            // 禁用聊天界面
+            function disableChatInterface() {
+                userInput.disabled = true;
+                sendBtn.disabled = true;
+                voiceBtn.disabled = true;
+                sendBtn.className = 'bg-gray-600 px-6 py-4 rounded-lg font-bold flex items-center';
+            }
             
             // 添加消息到聊天框
             function addMessage(text, isUser = false) {
@@ -532,6 +812,8 @@
             
             // 发送消息到OpenAI API
             async function sendToOpenAI(message) {
+                if (!apiKey) return;
+                
                 showTypingIndicator();
                 
                 try {
@@ -601,31 +883,21 @@
             // 快捷问题
             quickQuestions.forEach(question => {
                 question.addEventListener('click', () => {
+                    if (!apiKey) {
+                        addMessage("请先设置您的OpenAI API密钥以启用服务。", false);
+                        return;
+                    }
+                    
                     const text = question.textContent || question.innerText;
                     addMessage(text, true);
                     sendToOpenAI(text);
                 });
             });
             
-            // 语音输入（模拟）
-            voiceBtn.addEventListener('click', () => {
-                userInput.value = "请问冥币兑换人民币的汇率是多少？";
-                userInput.focus();
-                
-                // 添加视觉反馈
-                voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
-                voiceBtn.classList.add('text-yellow-500');
-                
-                setTimeout(() => {
-                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-                    voiceBtn.classList.remove('text-yellow-500');
-                }, 2000);
-            });
             
-            // 初始示例问题
-            setTimeout(() => {
-                addMessage("欢迎使用天地银行AI客服系统！您可以问我任何关于银行业务的问题。", false);
-            }, 1000);
+            
+            // 初始检查API Key
+            checkLocalStorage();
         });
     </script>
 </body>
