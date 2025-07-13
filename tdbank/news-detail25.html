@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天地银行 - 成员公示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 公共样式 -->
+    <style>
+        /* 从主界面复制过来的公共样式 */
+        @keyframes float {
+            0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}
+        }
+        @keyframes shine {
+            0%,100%{background-position:0% 50%}100%{background-position:100% 50%}
+        }
+        .gold-gradient { 
+            background:linear-gradient(90deg,#FFD700,#FFEC8B,#FFD700);
+            background-size:200% 100%;
+            animation:shine 3s linear infinite; 
+        }
+        .float-animation { animation: float 6s ease-in-out infinite; }
+        .bank-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .bank-card:hover {
+            transform: rotateY(15deg) rotateX(5deg);
+            box-shadow: 0 20px 30px rgba(255, 215, 0, 0.4);
+        }
+        .yin-yang {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #000 50%, #fff 50%);
+        }
+        .yin-yang::before, .yin-yang::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            animation: rotate 10s linear infinite;
+        }
+        .yin-yang::before {
+            width: 50px;
+            height: 50px;
+            background: #000;
+            border: 15px solid #fff;
+            top: 0;
+            left: 25px;
+        }
+        .yin-yang::after {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border: 15px solid #000;
+            bottom: 0;
+            left: 25px;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ghost {
+            position: relative;
+            width: 80px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50% 50% 0 0;
+            animation: ghostFloat 4s ease-in-out infinite;
+        }
+        .ghost::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            top: 40px;
+            left: 20px;
+            box-shadow: 30px 0 0 #000;
+        }
+        .ghost::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border-radius: 0 0 50% 50%;
+            background: rgba(255, 255, 255, 0.8);
+            top: 80px;
+            left: 10px;
+        }
+        @keyframes ghostFloat {
+            0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}
+        }
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        /* 整合样式 */
+        .login-box {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #d4af37;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 220px;
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .login-tit {
+            background: #d4af37;
+            color: #000;
+            padding: 10px;
+            font-weight: bold;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .login-close {
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .login-list ul {
+            list-style: none;
+        }
+        .login-list ul li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+        }
+        .login-list ul li:last-child {
+            border-bottom: none;
+        }
+        .login-list ul li a {
+            color: #e0d0a0;
+            text-decoration: none;
+            display: block;
+            padding-left: 25px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .login-list ul li a:before {
+            content: "»";
+            position: absolute;
+            left: 0;
+            color: #d4af37;
+        }
+        .login-list ul li a:hover {
+            color: #d4af37;
+            padding-left: 30px;
+        }
+        .news-section {
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid #d4af37;
+            padding: 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .news-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .news-lists {
+            color: #e0d0a0;
+            padding: 12px 0;
+            border-bottom: 1px dashed #444;
+        }
+        .news-lists a {
+            color: #d4af37;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+        .news-lists a:hover {
+            color: #ffec8b;
+            padding-left: 5px;
+        }
+        .btn-more {
+            color: #d4af37;
+            text-decoration: none;
+            float: right;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn-more:hover {
+            color: #ffec8b;
+        }
+        .services-section {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #d4af37;
+            padding: 30px 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        .services-title {
+            color: #d4af37;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .service-item {
+            background: rgba(20, 20, 20, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+        .service-icon {
+            font-size: 40px;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+        .service-name {
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .service-desc {
+            color: #e0d0a0;
+            font-size: 14px;
+        }
+        .feature-box {
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        @media (max-width: 768px) {
+            .login-box {
+                top: 80px;
+                right: 10px;
+                width: 180px;
+            }
+            .news-section, .services-section {
+                margin: 20px 10px;
+            }
+        }
+
+        
+        /* 新增成员公示样式 */
+        .org-chart {
+            position: relative;
+            padding: 40px 0;
+        }
+        .org-chart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #d4af37, transparent);
+            transform: translateX(-50%);
+        }
+        .position-box {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto 40px;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        .position-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+        .position-box::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: #d4af37;
+            transform: translateX(-50%);
+        }
+        .position-box:last-child::after {
+            display: none;
+        }
+        .position-title {
+            color: #d4af37;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .member-card {
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+        .member-card:hover {
+            border-color: #d4af37;
+            transform: translateX(5px);
+        }
+        .member-name {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .member-position {
+            color: #e0d0a0;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .member-desc {
+            color: #aaa;
+            font-size: 14px;
+            font-style: italic;
+        }
+        .department-header {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 40px 0 20px;
+            font-size: 22px;
+            color: #d4af37;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 30px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #d4af37, transparent);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #d4af37;
+            border: 3px solid #1a1a1a;
+        }
+        .timeline-year {
+            color: #d4af37;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 36px;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <!-- 浮动幽灵背景 -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="ghost absolute top-1/4 left-1/6 opacity-30" style="animation-delay: 0.5s;"></div>
+        <div class="ghost absolute top-1/3 right-1/5 opacity-20" style="animation-delay: 1s;"></div>
+        <div class="ghost absolute bottom-1/4 left-1/4 opacity-25" style="animation-delay: 1.5s;"></div>
+        <div class="ghost absolute bottom-1/3 right-1/6 opacity-15" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- 登录框 -->
+    <div class="login-box">
+        <div class="login-tit">
+            天地银行服务通道
+        </div>
+        <div class="login-list">
+            <ul>
+                <li><a href="./personal-login.html" title="个人客户登录">个人客户登录</a></li>
+                <li><a href="./family-login.html" title="家族账户登录">家族账户登录</a></li>
+                <li><a href="./underworld-login.html" title="地府机构登录">地府机构登录</a></li>
+                <li><a href="./afterlife-service.html" title="往生者服务">往生者服务</a></li>
+                <li><a href="./currency-exchange.html" title="冥币兑换">冥币兑换</a></li>
+                <li><a href="./yin-yang-transfer.html" title="阴阳转账">阴阳转账</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <header class="gold-gradient py-6 shadow-lg relative z-10">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="yin-yang mr-4"></div>
+                <h1 class="text-3xl md:text-4xl font-bold text-black">
+                    天地银行 <span class="text-sm block md:inline">阴阳两界金融服务</span>
+                </h1>
+            </div>
+            <nav class="flex space-x-1 md:space-x-4">
+                <a href="./index.html" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">首页</a>
+                <a href="#services" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">服务项目</a>
+                <a href="#about" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">关于我们</a>
+                <a href="#contact" class="px-3 py-2 rounded-lg bg-black bg-opacity-20 hover:bg-opacity-40 transition text-black font-semibold">联系我们</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 成员公示内容区域 -->
+    <section class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="bg-gray-800 p-8 rounded-xl border border-yellow-900 shadow-2xl">
+                <h1 class="text-3xl md:text-4xl font-bold mb-6 text-yellow-400 text-center">天地银行组织架构与成员公示</h1>
+                <p class="text-gray-400 text-center mb-10">自公元618年创立以来，天地银行始终致力于为阴阳两界提供安全、便捷的金融服务</p>
+                
+                <!-- 组织架构图 -->
+                <div class="org-chart mb-16">
+                    <div class="position-box">
+                        <div class="position-title">天庭监管委员会</div>
+                        <div class="member-card">
+                            <div class="member-name">玉皇大帝</div>
+                            <div class="member-position">天庭监管委员会主席</div>
+                            <div class="member-desc">统管天庭金融事务，监督天地银行运行</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-box">
+                        <div class="position-title">董事会</div>
+                        <div class="member-card">
+                            <div class="member-name">阎罗王</div>
+                            <div class="member-position">董事长</div>
+                            <div class="member-desc">主管地府金融事务，制定银行发展战略</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">太白金星</div>
+                            <div class="member-position">独立董事</div>
+                            <div class="member-desc">负责天庭与地府金融政策协调</div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-box">
+                        <div class="position-title">管理层</div>
+                        <div class="member-card">
+                            <div class="member-name">孟婆</div>
+                            <div class="member-position">行长</div>
+                            <div class="member-desc">全面负责银行日常运营管理</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">判官</div>
+                            <div class="member-position">副行长（风险控制）</div>
+                            <div class="member-desc">负责信贷审批与风险防控</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">钟馗</div>
+                            <div class="member-position">副行长（安全保卫）</div>
+                            <div class="member-desc">负责银行资产安全与反欺诈</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 部门成员展示 -->
+                <div class="department-header">核心部门负责人</div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 阳间事务部 -->
+                    <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 hover:border-yellow-500 transition-all">
+                        <div class="member-avatar">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center text-yellow-400 mb-3">阳间事务部</h3>
+                        <div class="member-card">
+                            <div class="member-name">诸葛孔明</div>
+                            <div class="member-position">部门总监</div>
+                            <div class="member-desc">负责阳间分支机构管理及生者金融服务</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">刘伯温</div>
+                            <div class="member-position">高级顾问</div>
+                            <div class="member-desc">风水布局与阴阳能量场优化</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 阴间业务部 -->
+                    <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 hover:border-yellow-500 transition-all">
+                        <div class="member-avatar">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center text-yellow-400 mb-3">阴间业务部</h3>
+                        <div class="member-card">
+                            <div class="member-name">黑无常</div>
+                            <div class="member-position">部门总监</div>
+                            <div class="member-desc">负责阴间分支机构管理及往生者金融服务</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">白无常</div>
+                            <div class="member-position">客户关系主管</div>
+                            <div class="member-desc">VIP客户接待与特殊需求处理</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 阴阳转账部 -->
+                    <div class="bg-gray-700 p-6 rounded-xl border border-gray-600 hover:border-yellow-500 transition-all">
+                        <div class="member-avatar">
+                            <i class="fas fa-yin-yang"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-center text-yellow-400 mb-3">阴阳转账部</h3>
+                        <div class="member-card">
+                            <div class="member-name">月下老人</div>
+                            <div class="member-position">部门总监</div>
+                            <div class="member-desc">主管阴阳两界资金转移业务</div>
+                        </div>
+                        <div class="member-card">
+                            <div class="member-name">哪吒</div>
+                            <div class="member-position">技术主管</div>
+                            <div class="member-desc">乾坤圈支付系统开发与维护</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 历史沿革 -->
+                <div class="department-header mt-16">天地银行历史沿革</div>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">公元618年</div>
+                        <p>唐高祖李渊批准成立"阴阳通宝局"，为天地银行前身</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">公元960年</div>
+                        <p>宋太祖赵匡胤改革金融体系，正式更名为"天地钱庄"</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">公元1368年</div>
+                        <p>明太祖朱元璋颁发《阴阳金融律》，确立现代银行制度</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">公元1912年</div>
+                        <p>顺应时代变革，更名为"天地银行"，采用现代银行管理模式</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">公元2023年</div>
+                        <p>推出"阴阳通"数字金融平台，实现三界无边界金融服务</p>
+                    </div>
+                </div>
+                
+                <!-- 成员查询 -->
+                <div class="bg-yellow-900/30 p-6 rounded-xl mt-16">
+                    <h3 class="text-xl font-bold text-yellow-400 mb-4 text-center">成员信息查询</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-gray-300 mb-3">请输入查询信息：</p>
+                            <div class="flex">
+                                <input type="text" placeholder="姓名/职位/部门" class="flex-grow px-4 py-2 bg-gray-700 border border-gray-600 rounded-l-lg focus:outline-none focus:border-yellow-500">
+                                <button class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-r-lg transition">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-gray-300 mb-3">按部门筛选：</p>
+                            <select class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-yellow-500">
+                                <option>所有部门</option>
+                                <option>天庭监管委员会</option>
+                                <option>董事会</option>
+                                <option>管理层</option>
+                                <option>阳间事务部</option>
+                                <option>阴间业务部</option>
+                                <option>阴阳转账部</option>
+                                <option>冥币发行局</option>
+                                <option>功德管理部</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 返回按钮 -->
+                <div class="mt-12 pt-6 border-t border-gray-700">
+                    <a href="./index.html" class="px-5 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg text-yellow-400 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                        返回首页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="bg-gray-900 py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <div class="yin-yang mr-4"></div>
+                        <h2 class="text-2xl font-bold text-yellow-500">天地银行</h2>
+                    </div>
+                    <p class="text-gray-500 mt-2">© 618-2023 天地银行 版权所有</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="./wechat.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weixin"></i>
+                    </a>
+                    <a href="./weibo.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-weibo"></i>
+                    </a>
+                    <a href="./qq.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fab fa-qq"></i>
+                    </a>
+                    <a href="./ghost-contact.html" class="text-gray-400 hover:text-yellow-500 transition text-2xl">
+                        <i class="fas fa-ghost"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-500">
+                <p>重要提示：天地银行受天庭金融管理局和地府财政司共同监管，存款安全有保障。</p>
+                <p class="mt-2">冥币与人民币兑换汇率每日浮动，请以当日阎王殿公告为准。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 快捷按钮 -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <a href="./online-service.html" class="bg-yellow-500 hover:bg-yellow-600 text-black w-14 h-14 rounded-full flex items-center justify-center shadow-lg transform transition hover:scale-110">
+            <i class="fas fa-ghost text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- 脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, { threshold: 0.1 });
+            fadeElements.forEach(el => {
+                el.style.opacity = 0;
+                observer.observe(el);
+            });
+
+            // 成员卡片悬停效果增强
+            const memberCards = document.querySelectorAll('.member-card');
+            memberCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 5px 15px rgba(212, 175, 55, 0.3)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
