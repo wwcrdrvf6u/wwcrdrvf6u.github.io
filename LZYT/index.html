@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>照片画廊</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        #gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .photo-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 300px;
+        }
+        .photo-item img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+        .photo-item p {
+            margin: 8px 0 4px;
+            font-size: 14px;
+            color: #555;
+            word-break: break-all;
+        }
+        #loading {
+            font-size: 18px;
+            color: #333;
+            margin: 50px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>照片画廊</h1>
+    <div id="loading">正在加载照片列表...</div>
+    <div id="gallery"></div>
 
+    <script>
+        // 1. 定义文件列表URL和图片基础URL
+        const listUrl = 'https://raw.githubusercontent.com/wwcrdrvf6u/LZY-Tokoto/refs/heads/main/img.txt';
+        // 基础URL需要指向你的仓库raw内容的目录，注意末尾的斜杠
+        const baseImageUrl = 'https://raw.githubusercontent.com/wwcrdrvf6u/LZY-Tokoto/refs/heads/main/';
+
+        // 2. 获取DOM元素
+        const galleryDiv = document.getElementById('gallery');
+        const loadingDiv = document.getElementById('loading');
+
+        // 3. 获取图片列表并显示
+        async function loadAndDisplayPhotos() {
+            try {
+                // 获取文本文件内容
+                const response = await fetch(listUrl);
+                if (!response.ok) {
+                    throw new Error(`无法获取图片列表 (HTTP ${response.status})`);
+                }
+                const text = await response.text();
+
+                // 按行分割，过滤空行
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+
+                if (lines.length === 0) {
+                    loadingDiv.textContent = '图片列表为空。';
+                    return;
+                }
+
+                // 清除加载提示
+                loadingDiv.style.display = 'none';
+
+                // 遍历每一行，创建图片元素
+                lines.forEach(filename => {
+                    // 去除可能的首尾空格和回车符
+                    const cleanFilename = filename.trim();
+                    // 构建完整的图片URL (注意: 这里直接拼接，如果文件名有空格或特殊字符，需要编码)
+                    // 使用 encodeURI 处理文件名中的中文和特殊字符
+                    const fullImageUrl = baseImageUrl + encodeURI(cleanFilename);
+
+                    // 创建一个容器div
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'photo-item';
+
+                    // 创建img元素
+                    const img = document.createElement('img');
+                    img.src = fullImageUrl;
+                    // 添加alt属性，方便知道是哪个文件加载失败
+                    img.alt = cleanFilename;
+                    // 添加加载失败时的占位提示
+                    img.onerror = function() {
+                        this.style.display = 'none'; // 隐藏破损图片
+                        // 可以在下方显示文件名和错误信息
+                        const errorMsg = document.createElement('p');
+                        errorMsg.className = 'error';
+                        errorMsg.textContent = `加载失败: ${cleanFilename}`;
+                        itemDiv.appendChild(errorMsg);
+                    };
+
+                    // 创建文件名显示
+                    const fileNameP = document.createElement('p');
+                    fileNameP.textContent = cleanFilename;
+
+                    // 组装
+                    itemDiv.appendChild(img);
+                    itemDiv.appendChild(fileNameP);
+                    galleryDiv.appendChild(itemDiv);
+                });
+
+            } catch (error) {
+                loadingDiv.innerHTML = `<span class="error">加载失败: ${error.message}</span>`;
+                console.error('Error:', error);
+            }
+        }
+
+        // 执行加载
+        loadAndDisplayPhotos();
+    </script>
+</body>
+</html>
